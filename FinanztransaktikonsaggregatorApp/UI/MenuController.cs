@@ -31,20 +31,20 @@ public class MenuController
             }
                 
             MenuHelper.CreateHorizontalLine();
-            Console.WriteLine("[0] Return / Exit");
+            Console.WriteLine("[ENTER] Return / Exit");
             Console.WriteLine();
             Console.Write("Please choose: ");
 
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
 
             // Return to last page; Exit app if in main menu
-            if (input == "0")
+            if (input is "")
             {
                 _isRunning = false;
                 continue;
             }
 
-            if (int.TryParse(input, out int choice) && choice > 0 && choice <= _commands.Count)
+            if (int.TryParse(input, out var choice) && choice > 0 && choice <= _commands.Count)
             {
                 var selectedCommand = _commands[choice - 1];
                 Console.Clear();

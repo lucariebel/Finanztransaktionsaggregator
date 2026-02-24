@@ -7,7 +7,7 @@ using FinanztransaktikonsaggregatorApp.UI.Commands.Dashboard;
 var mainCommands = new List<ICommand>
 {
     new DashboardCommand(),
-    new BudgetsCommand(),
+    new BudgetMenuCommand(),
     new ImportDataCommand(),
     new ExportCommand()
 };

@@ -1,11 +1,10 @@
 namespace FinanztransaktikonsaggregatorApp.UI.Commands.Budgets;
 
-public class BudgetsCommand : ICommand
+public class DeleteBudgetCommand : ICommand
 {
-    public string Name { get; } = "Budgets";
+    public string Name { get; } = "Delete budget";
     public void Execute()
     {
-        Console.WriteLine("...");
         Console.ReadKey();
     }
 }
