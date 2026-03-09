@@ -1,0 +1,31 @@
+namespace FinanztransaktikonsaggregatorApp.Entities;
+
+public class Stock
+{
+    public int Id { get; set; }
+    public string TickerSymbol { get; set; }
+    public string Name { get; set; }
+    public decimal Quantity { get; set; }
+    public decimal AverageBuyPrice { get; set; }
+    public decimal? LastKnownPrice { get; set; }
+    public DateTime? LastUpdated { get; set; }
+
+    public decimal GetCurrentValue()
+    {
+        if (LastKnownPrice.HasValue) return Quantity * LastKnownPrice.Value;
+
+        return Quantity * AverageBuyPrice;
+    }
+
+    public decimal GetProfitOrLoss()
+    {
+        if (LastKnownPrice.HasValue)
+        {
+            var totalInvested = Quantity * AverageBuyPrice;
+            var currentValue = GetCurrentValue();
+            return currentValue - totalInvested;
+        }
+
+        return 0m;
+    }
+}
