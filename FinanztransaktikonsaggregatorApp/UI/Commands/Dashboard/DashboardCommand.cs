@@ -5,15 +5,15 @@ namespace FinanztransaktikonsaggregatorApp.UI.Commands.Dashboard;
 
 public class DashboardCommand : ICommand
 {
-    public string Name { get; } = "Dashboard";
-    
-    private IDashboardService _dashboardService;
+    private readonly IDashboardService _dashboardService;
 
     public DashboardCommand(IDashboardService dashboardService)
     {
         _dashboardService = dashboardService;
     }
-    
+
+    public string Name { get; } = "Dashboard";
+
     public void Execute()
     {
         MenuHelper.CreateHeader("FINANCIAL DASHBOARD");
@@ -26,6 +26,7 @@ public class DashboardCommand : ICommand
             var displayName = $"{balance.Key.Name}:";
             Console.WriteLine($"{displayName,-15} {balance.Value,10:C2}");
         }
+
         Console.WriteLine();
         MenuHelper.CreateHorizontalLine();
         Console.WriteLine($"Month: {DateTime.Now:MMMM}");

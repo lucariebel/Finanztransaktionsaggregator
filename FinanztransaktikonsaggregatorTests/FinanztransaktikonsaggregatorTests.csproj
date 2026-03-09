@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FinanztransaktikonsaggregatorApp\FinanztransaktikonsaggregatorApp.csproj" />
+        <ProjectReference Include="..\FinanztransaktikonsaggregatorApp\FinanztransaktikonsaggregatorApp.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -2,107 +2,103 @@ using FinanztransaktikonsaggregatorApp;
 using FinanztransaktikonsaggregatorApp.Database;
 using FinanztransaktikonsaggregatorApp.Entities;
 
-namespace FinanztransaktikonsaggregatorTests.Database
+namespace FinanztransaktikonsaggregatorTests.Database;
+
+public class BudgetRepositoryTests : IDisposable
 {
-    public class BudgetRepositoryTests : IDisposable
+    private readonly DatabaseManager _dbManager;
+    private readonly BudgetRepository _repo;
+    private readonly AppConfig _testConfig;
+    private readonly string _testDbPath;
+
+    public BudgetRepositoryTests()
     {
-        private readonly string _testDbPath;
-        private readonly AppConfig _testConfig;
-        private readonly DatabaseManager _dbManager;
-        private readonly BudgetRepository _repo;
+        _testDbPath = $"test_budgets_{Guid.NewGuid()}.db";
 
-        public BudgetRepositoryTests()
+        _testConfig = new AppConfig(_testDbPath);
+
+        _dbManager = new DatabaseManager(_testConfig);
+        _dbManager.Initialize();
+
+        _repo = new BudgetRepository(_testConfig);
+    }
+
+    public void Dispose()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        if (File.Exists(_testDbPath)) File.Delete(_testDbPath);
+    }
+
+    [Fact]
+    public void Insert_And_GetAll()
+    {
+        // ARRANGE
+        var newBudget = new Budget
         {
-            _testDbPath = $"test_budgets_{Guid.NewGuid()}.db";
+            Category = "Lebensmittel",
+            LimitAmount = 300.00m
+        };
 
-            _testConfig = new AppConfig(_testDbPath);
+        // ACT
+        _repo.Insert(newBudget);
+        var results = _repo.GetAll();
 
-            _dbManager = new DatabaseManager(_testConfig);
-            _dbManager.Initialize();
+        // ASSERT
+        Assert.Single(results);
 
-            _repo = new BudgetRepository(_testConfig);
-        }
+        var savedBudget = results.First();
 
-        [Fact]
-        public void Insert_And_GetAll()
+        Assert.True(savedBudget.Id > 0);
+        Assert.Equal("Lebensmittel", savedBudget.Category);
+        Assert.Equal(300.00m, savedBudget.LimitAmount);
+    }
+
+    [Fact]
+    public void Insert_And_UpdateBudget()
+    {
+        // ARRANGE
+        var newBudget = new Budget
         {
-            // ARRANGE
-            var newBudget = new Budget
-            {
-                Category = "Lebensmittel",
-                LimitAmount = 300.00m
-            };
+            Category = "Lebensmittel",
+            LimitAmount = 300.00m
+        };
 
-            // ACT
-            _repo.Insert(newBudget);
-            var results = _repo.GetAll();
+        // ACT
+        _repo.Insert(newBudget);
+        newBudget.LimitAmount = 450.50m;
+        _repo.Update(newBudget);
 
-            // ASSERT
-            Assert.Single(results);
+        var results = _repo.GetAll();
 
-            var savedBudget = results.First();
-            
-            Assert.True(savedBudget.Id > 0); 
-            Assert.Equal("Lebensmittel", savedBudget.Category);
-            Assert.Equal(300.00m, savedBudget.LimitAmount);
-        }
+        // ASSERT
+        Assert.Single(results);
 
-        [Fact]
-        public void Insert_And_UpdateBudget()
+        var savedBudget = results.First();
+
+        Assert.Equal(1, savedBudget.Id);
+        Assert.Equal("Lebensmittel", savedBudget.Category);
+        Assert.Equal(450.50m, savedBudget.LimitAmount);
+    }
+
+    [Fact]
+    public void Insert_And_DeleteBudget()
+    {
+        // ARRANGE
+        var newBudget = new Budget
         {
-            // ARRANGE
-            var newBudget = new Budget
-            {
-                Category = "Lebensmittel",
-                LimitAmount = 300.00m
-            };
+            Category = "Lebensmittel",
+            LimitAmount = 300.00m
+        };
 
-            // ACT
-            _repo.Insert(newBudget);
-            newBudget.LimitAmount = 450.50m;
-            _repo.Update(newBudget);
-            
-            var results = _repo.GetAll();
+        // ACT
+        _repo.Insert(newBudget);
+        _repo.Delete(newBudget);
 
-            // ASSERT
-            Assert.Single(results);
+        var results = _repo.GetAll();
 
-            var savedBudget = results.First();
-            
-            Assert.Equal(1, savedBudget.Id); 
-            Assert.Equal("Lebensmittel", savedBudget.Category);
-            Assert.Equal(450.50m, savedBudget.LimitAmount);
-        }
-
-        [Fact]
-        public void Insert_And_DeleteBudget()
-        {
-            // ARRANGE
-            var newBudget = new Budget
-            {
-                Category = "Lebensmittel",
-                LimitAmount = 300.00m
-            };
-
-            // ACT
-            _repo.Insert(newBudget);
-            _repo.Delete(newBudget);
-            
-            var results = _repo.GetAll();
-
-            // ASSERT
-            Assert.Empty(results);
-        }
-
-        public void Dispose()
-        {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            if (File.Exists(_testDbPath))
-            {
-                File.Delete(_testDbPath);
-            }
-        }
+        // ASSERT
+        Assert.Empty(results);
     }
 }

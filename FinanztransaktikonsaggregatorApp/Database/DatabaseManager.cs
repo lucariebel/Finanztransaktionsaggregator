@@ -10,13 +10,14 @@ public class DatabaseManager
     {
         _connectionString = config.DatabaseConnectionString;
     }
+
     public void Initialize()
     {
         using (var connection = new SqliteConnection(_connectionString))
         {
             connection.Open();
 
-            string createTransactionsTable = @"
+            var createTransactionsTable = @"
                     CREATE TABLE IF NOT EXISTS Transactions (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Date TEXT NOT NULL,
@@ -26,14 +27,14 @@ public class DatabaseManager
                         AccountNumber TEXT
                     );";
 
-            string createBudgetsTable = @"
+            var createBudgetsTable = @"
                     CREATE TABLE IF NOT EXISTS Budgets (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Category TEXT UNIQUE NOT NULL,
                         LimitAmount REAL NOT NULL
                     );";
 
-            string createStocksTable = @"
+            var createStocksTable = @"
                     CREATE TABLE IF NOT EXISTS Stocks (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         TickerSymbol TEXT,
@@ -44,7 +45,7 @@ public class DatabaseManager
                         LastUpdated TEXT
                     );";
 
-            string createAccountsTable = @"
+            var createAccountsTable = @"
                     CREATE TABLE IF NOT EXISTS Accounts (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Name TEXT NOT NULL,
@@ -52,10 +53,25 @@ public class DatabaseManager
                         InitialBalance REAL NOT NULL
                     );";
 
-            using (var command = new SqliteCommand(createTransactionsTable, connection)) command.ExecuteNonQuery();
-            using (var command = new SqliteCommand(createBudgetsTable, connection)) command.ExecuteNonQuery();
-            using (var command = new SqliteCommand(createStocksTable, connection)) command.ExecuteNonQuery();
-            using (var command = new SqliteCommand(createAccountsTable, connection)) command.ExecuteNonQuery();
+            using (var command = new SqliteCommand(createTransactionsTable, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+
+            using (var command = new SqliteCommand(createBudgetsTable, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+
+            using (var command = new SqliteCommand(createStocksTable, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+
+            using (var command = new SqliteCommand(createAccountsTable, connection))
+            {
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

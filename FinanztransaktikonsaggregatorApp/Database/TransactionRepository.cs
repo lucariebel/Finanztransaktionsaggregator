@@ -15,13 +15,12 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
 
         using (var connection = GetOpenConnection())
         {
-            string sql = "SELECT Date, Amount, Description, Category, AccountNumber FROM Transactions";
+            var sql = "SELECT Date, Amount, Description, Category, AccountNumber FROM Transactions";
 
             using (var command = new SqliteCommand(sql, connection))
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
-                {
                     list.Add(new Transaction
                     {
                         Date = DateTime.Parse(reader.GetString(0)),
@@ -30,17 +29,17 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
                         Category = reader.GetString(3),
                         AccountNumber = reader.GetInt32(4)
                     });
-                }
             }
         }
+
         return list;
     }
-    
+
     public Transaction Insert(Transaction transaction)
     {
         using (var connection = GetOpenConnection())
         {
-            string sql = @"
+            var sql = @"
                     INSERT INTO Transactions (Date, Amount, Description, Category, AccountNumber) 
                     VALUES (@date, @amount, @description, @category, @accountNumber)
                     RETURNING Id";
@@ -53,8 +52,8 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
                 command.Parameters.AddWithValue("@category", transaction.Category ?? "Uncategorized");
                 command.Parameters.AddWithValue("@accountNumber", transaction.AccountNumber);
 
-                long newId = (long)command.ExecuteScalar();
-            
+                var newId = (long)command.ExecuteScalar();
+
                 transaction.Id = (int)newId;
             }
         }
@@ -66,9 +65,9 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
     {
         var list = new List<Transaction>();
 
-        using (var connection = GetOpenConnection()) 
+        using (var connection = GetOpenConnection())
         {
-            string sql = @"
+            var sql = @"
             SELECT Id, Date, Amount, Description, Category, AccountNumber 
             FROM Transactions 
             WHERE strftime('%Y', Date) = @year 
@@ -82,20 +81,19 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         list.Add(new Transaction
                         {
                             Id = reader.GetInt32(0),
                             Date = DateTime.Parse(reader.GetString(1)),
                             Amount = reader.GetDecimal(2),
-                            Description = reader.IsDBNull(3) ? null : reader.GetString(3),
-                            Category = reader.IsDBNull(4) ? "Uncategorized" : reader.GetString(4),
+                            Description = reader.GetString(3),
+                            Category = reader.GetString(4),
                             AccountNumber = reader.GetInt32(5)
                         });
-                    }
                 }
             }
         }
+
         return list;
     }
 
@@ -103,7 +101,7 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
     {
         using (var connection = GetOpenConnection())
         {
-            string sql = @"
+            var sql = @"
                 UPDATE Transactions 
                 SET Date = @date, 
                     Amount = @amount, 
@@ -133,7 +131,7 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
     {
         using (var connection = GetOpenConnection())
         {
-            string sql = "DELETE FROM Transactions WHERE Id = @id";
+            var sql = "DELETE FROM Transactions WHERE Id = @id";
 
             using (var command = new SqliteCommand(sql, connection))
             {

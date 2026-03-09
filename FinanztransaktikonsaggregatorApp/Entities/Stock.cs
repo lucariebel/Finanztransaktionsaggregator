@@ -9,23 +9,23 @@ public class Stock
     public decimal AverageBuyPrice { get; set; }
     public decimal? LastKnownPrice { get; set; }
     public DateTime? LastUpdated { get; set; }
+
     public decimal GetCurrentValue()
     {
-        if (LastKnownPrice.HasValue)
-        {
-            return Quantity * LastKnownPrice.Value;
-        }
-        return Quantity * AverageBuyPrice; 
+        if (LastKnownPrice.HasValue) return Quantity * LastKnownPrice.Value;
+
+        return Quantity * AverageBuyPrice;
     }
 
     public decimal GetProfitOrLoss()
     {
         if (LastKnownPrice.HasValue)
         {
-            decimal totalInvested = Quantity * AverageBuyPrice;
-            decimal currentValue = GetCurrentValue();
+            var totalInvested = Quantity * AverageBuyPrice;
+            var currentValue = GetCurrentValue();
             return currentValue - totalInvested;
         }
+
         return 0m;
     }
 }

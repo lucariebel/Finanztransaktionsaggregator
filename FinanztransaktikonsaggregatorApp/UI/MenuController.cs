@@ -5,16 +5,16 @@ namespace FinanztransaktikonsaggregatorApp.UI;
 
 public class MenuController
 {
-    private readonly string _title;
     private readonly List<ICommand> _commands;
+    private readonly string _title;
     private bool _isRunning = true;
-    
+
     public MenuController(string title, List<ICommand> commands)
     {
         _title = title;
         _commands = commands;
     }
-    
+
     public void Run()
     {
         _isRunning = true;
@@ -25,11 +25,8 @@ public class MenuController
             MenuHelper.CreateHeader(_title);
 
             // List commands
-            for (int i = 0; i < _commands.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] {_commands[i].Name}");
-            }
-                
+            for (var i = 0; i < _commands.Count; i++) Console.WriteLine($"[{i + 1}] {_commands[i].Name}");
+
             MenuHelper.CreateHorizontalLine();
             Console.WriteLine("[ENTER] Return / Exit");
             Console.WriteLine();

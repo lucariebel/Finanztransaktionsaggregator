@@ -5,28 +5,28 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Dashboard;
 
 public class DashboardService : IDashboardService
 {
-    private readonly ITransactionRepository _transactionRepo;
     private readonly IAccountRepository _accountRepo;
+    private readonly ITransactionRepository _transactionRepo;
 
-    public DashboardService(ITransactionRepository transactionRepo,  IAccountRepository accountRepo)
+    public DashboardService(ITransactionRepository transactionRepo, IAccountRepository accountRepo)
     {
         _transactionRepo = transactionRepo;
         _accountRepo = accountRepo;
     }
-    
+
     public decimal GetTotalNetWorth()
     {
-        decimal totalInitialBalances = _accountRepo.GetAll().Sum(a => a.InitialBalance);
+        var totalInitialBalances = _accountRepo.GetAll().Sum(a => a.InitialBalance);
 
-        decimal totalTransactionSum = _transactionRepo.GetAll().Sum(t => t.Amount);
+        var totalTransactionSum = _transactionRepo.GetAll().Sum(t => t.Amount);
 
         return totalInitialBalances + totalTransactionSum;
     }
-    
+
     public Dictionary<Account, decimal> GetBalancesPerAccount()
     {
         var allTransactions = _transactionRepo.GetAll();
-        var allAccounts = _accountRepo.GetAll(); 
+        var allAccounts = _accountRepo.GetAll();
 
         var balances = new Dictionary<Account, decimal>();
 
@@ -39,12 +39,9 @@ public class DashboardService : IDashboardService
 
         foreach (var account in allAccounts)
         {
-            decimal currentBalance = account.InitialBalance;
+            var currentBalance = account.InitialBalance;
 
-            if (transactionSums.TryGetValue(account.Id, out decimal sumOfTransactions))
-            {
-                currentBalance += sumOfTransactions;
-            }
+            if (transactionSums.TryGetValue(account.Id, out var sumOfTransactions)) currentBalance += sumOfTransactions;
 
             balances.Add(account, currentBalance);
         }
