@@ -6,7 +6,7 @@ public interface IStockRepository
 {
     List<Stock> GetAll();
     Stock GetById(int id);
-    void Insert(Stock stock);
-    void Update(Stock stock);
+    Stock Insert(Stock stock);
+    Stock Update(Stock stock);
     void Delete(Stock stock);
 }

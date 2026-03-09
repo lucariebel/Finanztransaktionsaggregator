@@ -35,7 +35,8 @@ public class DatabaseManager
 
             string createStocksTable = @"
                     CREATE TABLE IF NOT EXISTS Stocks (
-                        TickerSymbol TEXT PRIMARY KEY,
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        TickerSymbol TEXT,
                         Name TEXT,
                         Quantity REAL NOT NULL,
                         AverageBuyPrice REAL NOT NULL,
@@ -45,7 +46,7 @@ public class DatabaseManager
 
             string createAccountsTable = @"
                     CREATE TABLE IF NOT EXISTS Accounts (
-                        AccountNumber TEXT PRIMARY KEY,
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Name TEXT NOT NULL,
                         Institution TEXT,
                         InitialBalance REAL NOT NULL
@@ -54,6 +55,7 @@ public class DatabaseManager
             using (var command = new SqliteCommand(createTransactionsTable, connection)) command.ExecuteNonQuery();
             using (var command = new SqliteCommand(createBudgetsTable, connection)) command.ExecuteNonQuery();
             using (var command = new SqliteCommand(createStocksTable, connection)) command.ExecuteNonQuery();
+            using (var command = new SqliteCommand(createAccountsTable, connection)) command.ExecuteNonQuery();
         }
     }
 }
