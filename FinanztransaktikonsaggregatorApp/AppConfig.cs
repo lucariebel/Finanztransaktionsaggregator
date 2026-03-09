@@ -10,4 +10,9 @@ public class AppConfig
             
         DatabaseConnectionString = $"Data Source={dbPath}";
     }
+    
+    public AppConfig(string dbPath)
+    {
+        DatabaseConnectionString = $"Data Source={dbPath}";
+    }
 }
