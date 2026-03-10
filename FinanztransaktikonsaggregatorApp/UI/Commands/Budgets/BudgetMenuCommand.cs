@@ -19,7 +19,7 @@ public class BudgetMenuCommand : ICommand
         var menuCommands = new List<ICommand>
         {
             new ShowBudgetsCommand(_budgetService),
-            new AddNewBudgetCommand(),
+            new AddNewBudgetCommand(_budgetService),
             new DeleteBudgetCommand()
         };
 

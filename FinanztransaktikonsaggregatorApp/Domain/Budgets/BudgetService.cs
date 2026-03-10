@@ -42,4 +42,15 @@ public class BudgetService : IBudgetService
         decimal percentage = used / budget;
         return percentage * 100;
     }
+
+    public Budget addNewBudget(string categories, decimal limit)
+    {
+        Budget newBudget = new Budget
+        {
+            Category = categories,
+            LimitAmount = limit
+        };
+        return _budgetRepository.Insert(newBudget);
+        
+    }
 }

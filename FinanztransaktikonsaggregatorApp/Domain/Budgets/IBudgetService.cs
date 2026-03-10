@@ -9,4 +9,5 @@ public interface IBudgetService
 	decimal calculateRest(decimal budget, string categorie);
 
 	decimal calculatePercentage(decimal budget, string categorie);
+	Budget addNewBudget(string categorie, decimal limit);
 }

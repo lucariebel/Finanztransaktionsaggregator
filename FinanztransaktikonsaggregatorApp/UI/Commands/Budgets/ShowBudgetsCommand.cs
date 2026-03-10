@@ -14,7 +14,6 @@ public class ShowBudgetsCommand : ICommand
     }
 
     public string Name { get; } = "Show Budgets";
-    public string Description { get; } =  "Shows all Budgets within a period.";
 
     private string TimeSpan()
     {
