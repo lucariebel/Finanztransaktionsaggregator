@@ -34,6 +34,31 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
 
         return list;
     }
+    public List<Transaction> GetTransactionsByCategorie(string categorie)
+    {
+        var list = new List<Transaction>();
+        using (var connection = GetOpenConnection())
+        {
+            var sql = @"SELECT Amount FROM Transactions WHERE Category = @categorie";
+
+            using (var command = new SqliteCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@categorie", categorie);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                        list.Add(new Transaction
+                        {
+                            Amount = reader.GetDecimal(0),
+
+                        });
+                }
+            }
+        }
+
+        return list;
+    }
 
     public Transaction Insert(Transaction transaction)
     {
