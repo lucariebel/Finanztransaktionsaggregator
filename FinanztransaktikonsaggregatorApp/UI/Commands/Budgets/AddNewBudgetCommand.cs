@@ -21,13 +21,14 @@ public class AddNewBudgetCommand : ICommand
 
         Console.WriteLine("You chose Yes. Please enter the Category:");
         category = Console.ReadLine();
+        while (category == "")
+        {
+            Console.WriteLine("Please enter a Category:");
+            category = Console.ReadLine();
+        }
         Console.WriteLine("Please enter the Limit:");
         string input = Console.ReadLine();
-        while (!decimal.TryParse(input, out limit) || limit < 0)
-        {
-            Console.WriteLine("Invalid number. Please enter a valid positive number:");
-            input = Console.ReadLine();
-        }
+        limit = ParserHelper.ParseInteger(input);
         var newBudget = _budgetService.AddNewBudget(category, limit);
         Console.WriteLine($"Budget succesfully added! ID: {newBudget.Id}, Kategorie: {newBudget.Category}, Limit: {newBudget.LimitAmount}");
         Console.WriteLine();
