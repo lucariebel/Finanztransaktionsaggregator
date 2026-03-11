@@ -13,9 +13,9 @@ public class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
     }
 
-    public decimal getTransactionsByCategorie(string categorie)
+    public decimal getTransactionsBycategory(string category)
     {
-        List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionsSpendingsByCategory(categorie).ToList();
+        List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionsSpendingsByCategory(category).ToList();
         decimal usedBudget = transactionsSPendings.Sum(t => t.Amount);
         return usedBudget;
         

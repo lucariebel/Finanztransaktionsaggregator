@@ -5,7 +5,7 @@ namespace FinanztransaktikonsaggregatorApp.Database;
 
 public class BudgetRepository : BaseRepository, IBudgetRepository
 {
-    public  BudgetRepository(AppConfig config) : base(config)
+    public BudgetRepository(AppConfig config) : base(config)
     {
     }
 

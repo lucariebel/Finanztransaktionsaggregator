@@ -5,9 +5,9 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Budgets;
 public interface IBudgetService
 {
 	List<Budget> GetAllBudgets();
-	decimal GetUsedBudget(string categorie);
-	decimal CalculateRest(decimal budget, string categorie);
+	decimal GetUsedBudget(string category);
+	decimal CalculateRest(decimal budget, string category);
 
-	decimal CalculatePercentage(decimal budget, string categorie);
-	Budget AddNewBudget(string categorie, decimal limit);
+	decimal CalculatePercentage(decimal budget, string category);
+	Budget AddNewBudget(string category, decimal limit);
 }

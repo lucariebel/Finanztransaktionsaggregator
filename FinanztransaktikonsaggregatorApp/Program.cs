@@ -19,6 +19,7 @@ var budgetService = new BudgetService(budgetRepository, transactionService);
 
 
 dbManager.Initialize();
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 var mainCommands = new List<ICommand>
 {

@@ -31,7 +31,7 @@ public class ShowBudgetsCommand : ICommand
     {
         int width = Console.WindowWidth;
 
-        int cols = 6;
+        int cols = 5;
 
         int separatorWidth = (cols - 1) * 3;
 
@@ -39,11 +39,10 @@ public class ShowBudgetsCommand : ICommand
 
         string format =
             $"{{0,-{colWidth}}} | " +
-            $"{{1,-{colWidth}}} | " +
-            $"{{2,-{colWidth}}} | " +
-            $"{{3,-{colWidth}}} | " +
-            $"{{4,-{colWidth}}} | " +
-            $"{{5,-{colWidth}}}";
+            $"{{1,{colWidth}}} | " +
+            $"{{2,{colWidth}}} | " +
+            $"{{3,{colWidth}}} | " +
+            $"{{4,{colWidth}}}";
 
         return format;
     }
@@ -56,16 +55,18 @@ public class ShowBudgetsCommand : ICommand
         Console.WriteLine();
         if (budgets.Count == 0)
         {
-            Console.WriteLine("Es sind noch keine Budgets definiert.");
+            Console.WriteLine("No budgets have been defined.");
             Console.ReadKey();
         }
         else
         {
-            Console.WriteLine(TableFormatter(), "Kategorie", "Zeitraum", "Limit", "Verbrauch", "Rest", "%");
+            Console.WriteLine($"Timespan: {TimeSpan()}");
+            Console.WriteLine();
+            Console.WriteLine(TableFormatter(), "Category", "Limit", "Used", "Leftover", "%");
             MenuHelper.CreateHorizontalLine();
             foreach (var budget in budgets)
             {
-                Console.WriteLine(TableFormatter(), budget.Category, TimeSpan(), budget.LimitAmount, _budgetService.GetUsedBudget(budget.Category), _budgetService.CalculateRest(budget.LimitAmount, budget.Category), _budgetService.CalculatePercentage(budget.LimitAmount, budget.Category));
+                Console.WriteLine(TableFormatter(), budget.Category, $"{budget.LimitAmount:C2}", $"{_budgetService.GetUsedBudget(budget.Category):C2}", $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category):C2}", $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category)} %");
             }
 
             Console.ReadKey();

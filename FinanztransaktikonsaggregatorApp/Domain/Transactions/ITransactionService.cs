@@ -3,5 +3,5 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Transactions;
 
 public interface ITransactionService
 {
-    decimal getTransactionsByCategorie(string categorie);
+    decimal getTransactionsBycategory(string category);
 }
