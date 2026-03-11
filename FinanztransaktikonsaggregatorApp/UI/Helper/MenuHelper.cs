@@ -18,4 +18,25 @@ public static class MenuHelper
     {
         Console.WriteLine(new string('-', Console.WindowWidth));
     }
+
+    public static string TableFormatterBudget(int cols)
+    {
+        int width = Console.WindowWidth;
+
+        int separatorWidth = (cols - 1) * 3;
+
+        int colWidth = (width - separatorWidth) / cols;
+
+        var parts = new List<string>();
+
+        for (int i = 0; i < cols; i++)
+        {
+            if (i == 0) 
+                parts.Add($"{{{i},-{colWidth}}}");
+            else
+                parts.Add($"{{{i},{colWidth}}}");
+        }
+
+        return string.Join(" | ", parts);
+    }
 }
