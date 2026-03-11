@@ -27,28 +27,9 @@ public class ShowBudgetsCommand : ICommand
 
     }
 
-    private string TableFormatter()
-    {
-        int width = Console.WindowWidth;
-
-        int cols = 5;
-
-        int separatorWidth = (cols - 1) * 3;
-
-        int colWidth = (width - separatorWidth) / cols;
-
-        string format =
-            $"{{0,-{colWidth}}} | " +
-            $"{{1,{colWidth}}} | " +
-            $"{{2,{colWidth}}} | " +
-            $"{{3,{colWidth}}} | " +
-            $"{{4,{colWidth}}}";
-
-        return format;
-    }
-
     public void Execute()
     {
+        int cols = 5;
         var budgets = _budgetService.GetAllBudgets();
         
         MenuHelper.CreateHeader("BUDGETS OVERVIEW");
@@ -62,11 +43,11 @@ public class ShowBudgetsCommand : ICommand
         {
             Console.WriteLine($"Timespan: {TimeSpan()}");
             Console.WriteLine();
-            Console.WriteLine(TableFormatter(), "Category", "Limit", "Used", "Leftover", "%");
+            Console.WriteLine(MenuHelper.TableFormatterBudget(cols), "Category", "Limit", "Used", "Leftover", "%");
             MenuHelper.CreateHorizontalLine();
             foreach (var budget in budgets)
             {
-                Console.WriteLine(TableFormatter(), budget.Category, $"{budget.LimitAmount:C2}", $"{_budgetService.GetUsedBudget(budget.Category):C2}", $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category):C2}", $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category)} %");
+                Console.WriteLine(MenuHelper.TableFormatterBudget(cols), budget.Category, $"{budget.LimitAmount:C2}", $"{_budgetService.GetUsedBudget(budget.Category):C2}", $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category):C2}", $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category)} %");
             }
 
             Console.ReadKey();

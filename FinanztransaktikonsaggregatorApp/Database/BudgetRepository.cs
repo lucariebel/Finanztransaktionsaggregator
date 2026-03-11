@@ -108,7 +108,7 @@ public class BudgetRepository : BaseRepository, IBudgetRepository
         return budget;
     }
 
-    public void Delete(Budget budget)
+    public void Delete(int id)
     {
         using (var connection = GetOpenConnection())
         {
@@ -116,7 +116,7 @@ public class BudgetRepository : BaseRepository, IBudgetRepository
 
             using (var command = new SqliteCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@id", budget.Id);
+                command.Parameters.AddWithValue("@id", id);
                 command.ExecuteNonQuery();
             }
         }

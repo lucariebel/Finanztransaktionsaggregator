@@ -53,4 +53,9 @@ public class BudgetService : IBudgetService
         return _budgetRepository.Insert(newBudget);
         
     }
+
+    public void DeleteBudget(int id)
+    {
+        _budgetRepository.Delete(id);
+    }
 }

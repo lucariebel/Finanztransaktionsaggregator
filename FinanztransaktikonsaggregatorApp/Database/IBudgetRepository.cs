@@ -8,5 +8,5 @@ public interface IBudgetRepository
     Budget GetById(int id);
     Budget Insert(Budget budget);
     Budget Update(Budget budget);
-    void Delete(Budget budget);
+    void Delete(int id);
 }
