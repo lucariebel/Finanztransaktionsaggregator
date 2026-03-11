@@ -16,34 +16,34 @@ public class BudgetService : IBudgetService
         _transactionService = transactionService;
     } 
 
-    public List<Budget> getAllBudgets()
+    public List<Budget> GetAllBudgets()
     {
         return _budgetRepository.GetAll().ToList();
     }
 
-    public decimal getUsedBudget(string categorie)
+    public decimal GetUsedBudget(string categorie)
     {
-        List<Transaction> transactions = _transactionService.getTransactionsByCategorie(categorie);
-        decimal usedBudget = transactions.Sum(t => t.Amount);
+        decimal usedBudget = _transactionService.getTransactionsByCategorie(categorie);
+
         return usedBudget;
 
     }
 
-    public decimal calculateRest(decimal budget, string categorie)
+    public decimal CalculateRest(decimal budget, string categorie)
     {
-        decimal used = getUsedBudget(categorie);
+        decimal used = GetUsedBudget(categorie);
         decimal rest = budget - used;
         return rest;
     }
 
-    public decimal calculatePercentage(decimal budget, string categorie)
+    public decimal CalculatePercentage(decimal budget, string categorie)
     {
-        decimal used = getUsedBudget(categorie); ;
+        decimal used = GetUsedBudget(categorie); ;
         decimal percentage = used / budget;
         return percentage * 100;
     }
 
-    public Budget addNewBudget(string categories, decimal limit)
+    public Budget AddNewBudget(string categories, decimal limit)
     {
         Budget newBudget = new Budget
         {

@@ -50,13 +50,14 @@ public class ShowBudgetsCommand : ICommand
 
     public void Execute()
     {
-        var budgets = _budgetService.getAllBudgets();
+        var budgets = _budgetService.GetAllBudgets();
         
         MenuHelper.CreateHeader("BUDGETS OVERVIEW");
         Console.WriteLine();
         if (budgets.Count == 0)
         {
             Console.WriteLine("Es sind noch keine Budgets definiert.");
+            Console.ReadKey();
         }
         else
         {
@@ -64,7 +65,7 @@ public class ShowBudgetsCommand : ICommand
             MenuHelper.CreateHorizontalLine();
             foreach (var budget in budgets)
             {
-                Console.WriteLine(TableFormatter(), budget.Category, TimeSpan(), budget.LimitAmount, _budgetService.getUsedBudget(budget.Category), _budgetService.calculateRest(budget.LimitAmount, budget.Category), _budgetService.calculatePercentage(budget.LimitAmount, budget.Category));
+                Console.WriteLine(TableFormatter(), budget.Category, TimeSpan(), budget.LimitAmount, _budgetService.GetUsedBudget(budget.Category), _budgetService.CalculateRest(budget.LimitAmount, budget.Category), _budgetService.CalculatePercentage(budget.LimitAmount, budget.Category));
             }
 
             Console.ReadKey();

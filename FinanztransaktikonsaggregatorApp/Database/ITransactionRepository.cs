@@ -5,7 +5,7 @@ namespace FinanztransaktikonsaggregatorApp.Database;
 public interface ITransactionRepository
 {
     List<Transaction> GetAll();
-    List<Transaction> GetTransactionsByCategorie(string categorie);
+    List<Transaction> GetTransactionsSpendingsByCategory(string category);
     Transaction Insert(Transaction transaction);
     List<Transaction> GetTransactionsByMonth(int year, int month);
     Transaction Update(Transaction transaction);

@@ -4,10 +4,10 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Budgets;
 
 public interface IBudgetService
 {
-	List<Budget> getAllBudgets();
-	decimal getUsedBudget(string categorie);
-	decimal calculateRest(decimal budget, string categorie);
+	List<Budget> GetAllBudgets();
+	decimal GetUsedBudget(string categorie);
+	decimal CalculateRest(decimal budget, string categorie);
 
-	decimal calculatePercentage(decimal budget, string categorie);
-	Budget addNewBudget(string categorie, decimal limit);
+	decimal CalculatePercentage(decimal budget, string categorie);
+	Budget AddNewBudget(string categorie, decimal limit);
 }

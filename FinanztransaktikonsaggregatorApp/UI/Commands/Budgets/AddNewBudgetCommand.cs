@@ -36,7 +36,7 @@ public class AddNewBudgetCommand : ICommand
                     Console.WriteLine("Invalid number. Please enter a valid positive number:");
                     input = Console.ReadLine();
                 }
-                var newBudget = _budgetService.addNewBudget(categorie, limit);
+                var newBudget = _budgetService.AddNewBudget(categorie, limit);
                 Console.WriteLine($"Budget erfolgreich hinzugefügt! ID: {newBudget.Id}, Kategorie: {newBudget.Category}, Limit: {newBudget.LimitAmount}");
                 Console.WriteLine();
             }

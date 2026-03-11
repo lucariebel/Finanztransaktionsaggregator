@@ -34,16 +34,17 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
 
         return list;
     }
-    public List<Transaction> GetTransactionsByCategorie(string categorie)
+
+    public List<Transaction> GetTransactionsSpendingsByCategory(string category)
     {
         var list = new List<Transaction>();
         using (var connection = GetOpenConnection())
         {
-            var sql = @"SELECT Amount FROM Transactions WHERE Category = @categorie";
+            var sql = @"SELECT Amount FROM Transactions WHERE Category = @category";
 
             using (var command = new SqliteCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@categorie", categorie);
+                command.Parameters.AddWithValue("@category", category);
 
                 using (var reader = command.ExecuteReader())
                 {
