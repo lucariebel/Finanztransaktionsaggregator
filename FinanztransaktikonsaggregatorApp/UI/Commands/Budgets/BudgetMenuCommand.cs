@@ -21,7 +21,7 @@ public class BudgetMenuCommand : ICommand
             new ShowBudgetsCommand(_budgetService),
             new AddNewBudgetCommand(_budgetService),
             new DeleteBudgetCommand(_budgetService),
-            new UpdateBudgetCommand()
+            new UpdateBudgetCommand(_budgetService)
         };
 
         var budgetMenu = new MenuController("BUDGETS MANAGEMENT", menuCommands);
