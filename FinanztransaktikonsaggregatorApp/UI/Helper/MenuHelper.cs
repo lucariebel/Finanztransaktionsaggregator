@@ -1,3 +1,5 @@
+using FinanztransaktikonsaggregatorApp.Entities;
+
 namespace FinanztransaktikonsaggregatorApp.Controllers.Helper;
 
 public static class MenuHelper
@@ -38,5 +40,25 @@ public static class MenuHelper
         }
 
         return string.Join(" | ", parts);
+    }
+
+    public static void BudgetList(int cols, List<Budget> budgets)
+    {
+        Console.WriteLine("Your Budgets:");
+        MenuHelper.CreateHorizontalLine();
+
+        Console.WriteLine(MenuHelper.TableFormatterBudget(cols), "Category", "ID", "Limit");
+        if (budgets.Count == 0)
+        {
+            Console.WriteLine("No budgets have been defined.");
+        }
+        else
+        {
+            foreach (var budget in budgets)
+            {
+                Console.WriteLine(MenuHelper.TableFormatterBudget(cols), $"{budget.Category}", budget.Id, $"{budget.LimitAmount:C2}");
+            }
+        }
+
     }
 }
