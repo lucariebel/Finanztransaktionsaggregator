@@ -11,4 +11,7 @@ public interface IBudgetService
 	decimal CalculatePercentage(decimal budget, string category);
 	Budget AddNewBudget(string category, decimal limit);
 	void DeleteBudget(int id);
+	Budget UpdateBudget(int id, string category, decimal limit);
+
+	bool IsValidId(int id);
 }

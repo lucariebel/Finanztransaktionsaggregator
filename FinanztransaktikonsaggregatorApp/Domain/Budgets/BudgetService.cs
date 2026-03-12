@@ -43,11 +43,11 @@ public class BudgetService : IBudgetService
         return percentage * 100;
     }
 
-    public Budget AddNewBudget(string categorys, decimal limit)
+    public Budget AddNewBudget(string category, decimal limit)
     {
         Budget newBudget = new Budget
         {
-            Category = categorys,
+            Category = category,
             LimitAmount = limit
         };
         return _budgetRepository.Insert(newBudget);
@@ -58,4 +58,29 @@ public class BudgetService : IBudgetService
     {
         _budgetRepository.Delete(id);
     }
+    public Budget UpdateBudget(int id, string category, decimal limit)
+    {
+        Budget updateBudget = new Budget
+        {
+            Id = id,
+            Category = category,
+            LimitAmount = limit
+        };
+        return _budgetRepository.Update(updateBudget);
+    }
+
+    public bool IsValidId(int id)
+    {
+        var budget = GetAllBudgets().FirstOrDefault(budget => budget.Id == id);
+
+        if (budget == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 }
