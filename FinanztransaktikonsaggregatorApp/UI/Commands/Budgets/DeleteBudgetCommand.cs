@@ -17,29 +17,6 @@ public class DeleteBudgetCommand : ICommand
     }
     public string Name { get; } = "Delete budget";
 
-    private void BugdetList()
-    {
-        int cols = 3;
-        _budgets = _budgetService.GetAllBudgets();
-        Console.WriteLine("Your Budgets:");
-        MenuHelper.CreateHorizontalLine();
-
-        Console.WriteLine(MenuHelper.TableFormatterBudget(cols), "Category", "ID", "Limit");
-        if (_budgets.Count == 0)
-        {
-            Console.WriteLine("No budgets have been defined.");
-        }
-        else
-        {
-            foreach (var budget in _budgets)
-            {
-                Console.WriteLine(MenuHelper.TableFormatterBudget(cols), $"{budget.Category}", budget.Id, $"{budget.LimitAmount:C2}");
-            }
-        }
-
-    }
-
-
     public void Execute()
     {
         int id;
@@ -49,24 +26,25 @@ public class DeleteBudgetCommand : ICommand
             Console.Clear();
             MenuHelper.CreateHeader("DELETE BUDGET");
             Console.WriteLine();
-            BugdetList();
+            MenuHelper.BudgetList(3, _budgetService.GetAllBudgets());
             if (_budgets.Count > 0)
             {
                 Console.WriteLine("Please enter the id you want to delete.");
                 Console.WriteLine("Press 'n' to cancel.");
                 string input = Console.ReadLine();
                 Console.WriteLine();
-                if (input.ToLower() == "n")
-                {
-                    deleteBudget = false;
-                }
-                else if((input.Any(char.IsLetter)))
+                if((input.Any(char.IsLetter)))
                 {
                     deleteBudget = false;
                 }
                 else
                 {
-                    id = ParserHelper.ParseInteger(input);
+                    id = InputHelper.GetValidId
+                    (
+                        "Invalid ID! Please enter a valid ID:",
+                        _budgetService.IsValidId,
+                        input
+                    );
                     _budgetService.DeleteBudget(id);
                     Console.WriteLine("Budget deleted.");
                     _budgets = _budgetService.GetAllBudgets();

@@ -20,15 +20,10 @@ public class AddNewBudgetCommand : ICommand
         decimal limit;
 
         Console.WriteLine("You chose Yes. Please enter the Category:");
-        category = Console.ReadLine();
-        while (category == "")
-        {
-            Console.WriteLine("Please enter a Category:");
-            category = Console.ReadLine();
-        }
+        category = InputHelper.GetRequiredString("Please enter a category:");
         Console.WriteLine("Please enter the Limit:");
         string input = Console.ReadLine();
-        limit = ParserHelper.ParseInteger(input);
+        limit = ParserHelper.ParseDecimal(input);
         var newBudget = _budgetService.AddNewBudget(category, limit);
         Console.WriteLine($"Budget succesfully added! ID: {newBudget.Id}, Kategorie: {newBudget.Category}, Limit: {newBudget.LimitAmount}");
         Console.WriteLine();
