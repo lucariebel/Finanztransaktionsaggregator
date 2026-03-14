@@ -41,4 +41,14 @@ public static class InputHelper
         }
         return ParserHelper.ParseDecimal(input);
     }
+
+    public static string GetExistingFilePath(string message, string filePath)
+    {
+        while (!File.Exists(filePath))
+        {
+            Console.WriteLine(message);
+            filePath = Console.ReadLine();
+        }
+        return filePath;
+    }
 }
