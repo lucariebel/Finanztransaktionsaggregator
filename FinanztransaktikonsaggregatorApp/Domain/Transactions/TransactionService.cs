@@ -13,11 +13,16 @@ public class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
     }
 
-    public decimal getTransactionsBycategory(string category)
+    public decimal GetTransactionsBycategory(string category)
     {
         List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionsSpendingsByCategory(category).ToList();
         decimal usedBudget = transactionsSPendings.Sum(t => t.Amount);
         return usedBudget;
         
+    }
+
+    public void AddTransaction(Transaction transaction)
+    {
+        _transactionRepository.Insert(transaction);
     }
 }

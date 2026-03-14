@@ -23,7 +23,7 @@ public class BudgetService : IBudgetService
 
     public decimal GetUsedBudget(string category)
     {
-        decimal usedBudget = _transactionService.getTransactionsBycategory(category);
+        decimal usedBudget = _transactionService.GetTransactionsBycategory(category);
 
         return usedBudget;
 
