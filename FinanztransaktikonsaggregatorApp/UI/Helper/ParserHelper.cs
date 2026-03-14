@@ -16,9 +16,9 @@ public static class ParserHelper
     public static decimal ParseDecimal(string input)
     {
         decimal number;
-        while (!decimal.TryParse(input, out number) || number <= 0)
+        while (!decimal.TryParse(input, out number))
         {
-            Console.WriteLine("Invalid number. Please enter a valid positive id:");
+            Console.WriteLine("Invalid number. Please enter a valid number:");
             input = Console.ReadLine();
         }
         return number;

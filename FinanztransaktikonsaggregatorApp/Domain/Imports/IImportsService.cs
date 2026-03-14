@@ -1,7 +1,12 @@
 using FinanztransaktikonsaggregatorApp.Entities;
+using FinanztransaktikonsaggregatorApp.UI.Commands.Import;
 namespace FinanztransaktikonsaggregatorApp.Domain.Imports;
 
 public interface IImportsService
 {
-    List<Transaction> ImportTransactions(string filePath);
+    ImportResult ImportTransactions(string filePath);
+
+    string SaveTransacitons(List<Transaction> transactions);
+
+    List<Transaction> MergeList(List<Transaction> categorized ,List<Transaction> transactions);
 }
