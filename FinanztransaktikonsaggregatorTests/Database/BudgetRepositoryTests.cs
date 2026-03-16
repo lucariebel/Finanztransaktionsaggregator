@@ -1,6 +1,7 @@
 using FinanztransaktikonsaggregatorApp;
 using FinanztransaktikonsaggregatorApp.Database;
 using FinanztransaktikonsaggregatorApp.Entities;
+using Microsoft.Data.Sqlite;
 
 namespace FinanztransaktikonsaggregatorTests.Database;
 
@@ -25,6 +26,7 @@ public class BudgetRepositoryTests : IDisposable
 
     public void Dispose()
     {
+        SqliteConnection.ClearAllPools();
         GC.Collect();
         GC.WaitForPendingFinalizers();
 
@@ -94,7 +96,7 @@ public class BudgetRepositoryTests : IDisposable
 
         // ACT
         _repo.Insert(newBudget);
-        _repo.Delete(newBudget);
+        _repo.Delete(newBudget.Id);
 
         var results = _repo.GetAll();
 

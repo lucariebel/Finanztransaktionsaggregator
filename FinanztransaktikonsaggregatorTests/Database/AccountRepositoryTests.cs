@@ -1,6 +1,7 @@
 using FinanztransaktikonsaggregatorApp;
 using FinanztransaktikonsaggregatorApp.Database;
 using FinanztransaktikonsaggregatorApp.Entities;
+using Microsoft.Data.Sqlite;
 
 namespace FinanztransaktikonsaggregatorTests.Database;
 
@@ -25,6 +26,7 @@ public class AccountRepositoryTests : IDisposable
 
     public void Dispose()
     {
+        SqliteConnection.ClearAllPools();
         GC.Collect();
         GC.WaitForPendingFinalizers();
 
