@@ -1,6 +1,7 @@
 using FinanztransaktikonsaggregatorApp.Entities;
 using FinanztransaktikonsaggregatorApp.Database;
 using FinanztransaktikonsaggregatorApp.Domain.Transactions;
+using FinanztransaktikonsaggregatorApp.Controllers.Helper;
 
 namespace FinanztransaktikonsaggregatorApp.Domain.Budgets;
 
@@ -24,7 +25,7 @@ public class BudgetService : IBudgetService
     public List<Budget> GetBudgetWarnings(decimal threshold)
     {
         return GetAllBudgets()
-            .Where(b => CalculatePercentage(b.LimitAmount, b.Category) > threshold)
+            .Where(b => CalculatePercentage(b.LimitAmount, b.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth()) > threshold)
             .ToList();
     }
 
@@ -50,7 +51,7 @@ public class BudgetService : IBudgetService
     public decimal CalculatePercentage(decimal budget, string category, int year, int month)
     {
         decimal used = GetUsedBudget(category, year, month);
-        decimal percentage = used / budget;
+        decimal percentage = used / (budget + GetIncome(category, year, month));
         return percentage * 100;
     }
 

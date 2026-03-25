@@ -17,7 +17,7 @@ public class ShowBudgetsCommand : ICommand
 
     public void Execute()
     {
-        int cols = 5;
+        int cols = 6;
         var budgets = _budgetService.GetAllBudgets();
         
         MenuHelper.CreateHeader("BUDGETS OVERVIEW");

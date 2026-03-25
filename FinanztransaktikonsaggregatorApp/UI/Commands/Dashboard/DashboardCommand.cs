@@ -90,7 +90,7 @@ public class DashboardCommand : ICommand
         {
             foreach (var budget in warnings)
             {
-                Console.WriteLine($"{budget.Category,-15} ({_budgetService.CalculatePercentage(budget.LimitAmount , budget.Category)}%) {budget.LimitAmount,10:C2}  WARNING  {_budgetService.CalculateRest(budget.LimitAmount , budget.Category),10:C2} left");
+                Console.WriteLine($"{budget.Category,-15} ({_budgetService.CalculatePercentage(budget.LimitAmount , budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth())}%) {budget.LimitAmount,10:C2}  WARNING  {_budgetService.CalculateRest(budget.LimitAmount , budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth()),10:C2} left");
             }
         }
     }
