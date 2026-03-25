@@ -37,8 +37,8 @@ public class BudgetServiceTests
     public void GetUsedBudget_ReturnsTransactionSum()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50 });
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 70 });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -50 });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -70 });
 
         // ACT
         var result = _service.GetUsedBudget("Food");
@@ -46,25 +46,41 @@ public class BudgetServiceTests
         // ASSERT
         Assert.Equal(120m, result);
     }
+    [Fact]
+    public void GetIncome_ReturnsCorrectIncome()
+    {
+        // ARRANGE
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 100 });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50 });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -30 }); // ignorieren
+
+        // ACT
+        var result = _service.GetIncome("Food");
+
+        // ASSERT
+        Assert.Equal(150m, result);
+    }
 
     [Fact]
     public void CalculateRest_ReturnsCorrectRemainingBudget()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 100 });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -100 }); // Ausgabe
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50 });   // Einkommen
 
         // ACT
         var result = _service.CalculateRest(300m, "Food");
 
         // ASSERT
-        Assert.Equal(200m, result);
+        // 300 + 50 - 100 = 250
+        Assert.Equal(250m, result);
     }
 
     [Fact]
     public void CalculatePercentage_ReturnsCorrectPercentage()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50 });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -50 });
 
         // ACT
         var result = _service.CalculatePercentage(200m, "Food");

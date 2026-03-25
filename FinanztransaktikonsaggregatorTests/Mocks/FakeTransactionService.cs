@@ -17,7 +17,14 @@ class FakeTransactionService : ITransactionService
     {
         return _transactions
             .Where(t => t.Category == category)
-            .Sum(t => t.Amount);
+            .Where(t => t.Amount < 0)
+			.Sum(t => t.Amount);
     }
-    public List<Transaction> GetAllTransactions() => _transactions;
+	public decimal GetIncomeByCategory(string category)
+	{
+		return _transactions
+			.Where(t => t.Amount > 0)
+			.Sum(t => t.Amount);
+	}
+	public List<Transaction> GetAllTransactions() => _transactions;
 }
