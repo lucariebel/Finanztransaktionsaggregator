@@ -41,6 +41,10 @@ public static class ExceptionHandler
                 Console.WriteLine($"{exception.Message}");
                 break;
 
+            case IOException:
+                Console.WriteLine($"{exception.Message}");
+                break;
+
             default:
                 Console.WriteLine("An unexpected error occurred. Please try again.");
                 break;
