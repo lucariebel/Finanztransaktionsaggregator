@@ -23,6 +23,7 @@ var budgetService = new BudgetService(budgetRepository, transactionService);
 var dashboardService = new DashboardService(transactionService, accountService);
 var categoryService = new CategoryService();
 var importService = new ImportsService(transactionService, categoryService);
+var exportService = new ExportService(transactionService);
 
 
 dbManager.Initialize();
@@ -33,7 +34,7 @@ var mainCommands = new List<ICommand>
     new DashboardCommand(dashboardService, budgetService, transactionService),
     new BudgetMenuCommand(budgetService),
     new ImportDataCommand(importService),
-    new ExportCommand()
+    new ExportCommand(exportService)
 };
 
 var mainMenu = new MenuController("Home", mainCommands);
