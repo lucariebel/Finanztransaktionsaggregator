@@ -20,7 +20,9 @@ public class ImportDataCommand : ICommand
         foreach (var transaction in uncategorized)
         {
             Console.WriteLine($"Description: {transaction.Description}");
+            Console.ForegroundColor = transaction.Amount >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
             Console.WriteLine($"Amount: {transaction.Amount}");
+            Console.ResetColor();
 
             Console.WriteLine("Enter a category, or press Enter to skip:");
             var input = Console.ReadLine()?.Trim();
@@ -45,7 +47,9 @@ public class ImportDataCommand : ICommand
         Console.WriteLine("Start Import...");
         foreach (Transaction transaction in transactions.AllTransactions)
         {
+            Console.ForegroundColor = transaction.Amount >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
             Console.WriteLine(transaction);
+            Console.ResetColor();
         }
         var categorized = AskUserForCategory(transactions.UncategorizedTransactions);
         List<Transaction> mergedList = _importsService.MergeList(categorized, transactions.AllTransactions);
