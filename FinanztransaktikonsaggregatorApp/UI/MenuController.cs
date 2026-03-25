@@ -1,4 +1,5 @@
 using FinanztransaktikonsaggregatorApp.Controllers.Helper;
+using FinanztransaktikonsaggregatorApp.Middleware;
 using FinanztransaktikonsaggregatorApp.UI.Commands;
 
 namespace FinanztransaktikonsaggregatorApp.UI;
@@ -45,13 +46,25 @@ public class MenuController
             {
                 var selectedCommand = _commands[choice - 1];
                 Console.Clear();
-                selectedCommand.Execute();
+                ExecuteCommand(selectedCommand);
             }
             else
             {
                 Console.WriteLine("Invalid key!");
                 Console.ReadKey();
             }
+        }
+    }
+
+    private void ExecuteCommand(ICommand command)
+    {
+        try
+        {
+            command.Execute();
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.Handle(ex);
         }
     }
 }

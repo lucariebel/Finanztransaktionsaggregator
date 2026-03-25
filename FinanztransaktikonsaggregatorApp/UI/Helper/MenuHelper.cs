@@ -8,17 +8,22 @@ public static class MenuHelper
     {
         var windowWidth = Console.WindowWidth;
 
-        Console.WriteLine(new string('=', windowWidth));
+        CreateDoubledHorizontalLine();
 
         var padding = (windowWidth + title.Length) / 2;
         Console.WriteLine(title.PadLeft(padding).PadRight(windowWidth));
 
-        Console.WriteLine(new string('=', windowWidth));
+        CreateDoubledHorizontalLine();
     }
 
     public static void CreateHorizontalLine()
     {
         Console.WriteLine(new string('-', Console.WindowWidth));
+    }
+    
+    public static void CreateDoubledHorizontalLine()
+    {
+        Console.WriteLine(new string('═', Console.WindowWidth));
     }
 
     public static string TableFormatterBudget(int cols)
