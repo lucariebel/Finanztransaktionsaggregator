@@ -21,28 +21,29 @@ public class BudgetService : IBudgetService
         return _budgetRepository.GetAll().ToList();
     }
 
-    public decimal GetUsedBudget(string category)
+    public decimal GetUsedBudget(string category, int year, int month)
     {
-        decimal usedBudget = _transactionService.GetUsedBudgetByCategory(category);
+
+        decimal usedBudget = _transactionService.GetUsedBudgetByCategoryAndMonth(category, year, month);
 
         return Math.Abs(usedBudget);
     }
 
-    public decimal GetIncome(string category)
+    public decimal GetIncome(string category, int year, int month)
     {
-        return _transactionService.GetIncomeByCategory(category);
+        return _transactionService.GetIncomeByCategory(category, year, month);
     }
 
-    public decimal CalculateRest(decimal budget, string category)
+    public decimal CalculateRest(decimal budget, string category, int year, int month)
     {
-        decimal used = GetUsedBudget(category);
-        decimal rest = budget + GetIncome(category) - used;
+        decimal used = GetUsedBudget(category, year, month);
+        decimal rest = budget + GetIncome(category, year, month) - used;
         return rest;
     }
 
-    public decimal CalculatePercentage(decimal budget, string category)
+    public decimal CalculatePercentage(decimal budget, string category, int year, int month)
     {
-        decimal used = GetUsedBudget(category);
+        decimal used = GetUsedBudget(category, year, month);
         decimal percentage = used / budget;
         return percentage * 100;
     }

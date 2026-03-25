@@ -13,18 +13,18 @@ public class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
     }
 
-    public decimal GetUsedBudgetByCategory(string category)
+    public decimal GetUsedBudgetByCategoryAndMonth(string category, int year, int month)
     {
-        List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionsSpendingsByCategory(category).ToList();
+        List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionSpendingsByCategoryAndMonth(category, year, month).ToList();
         decimal usedBudget = transactionsSPendings
             .Where(t => t.Amount < 0)
             .Sum(t => Math.Abs(t.Amount));
         return usedBudget;
     }
 
-    public decimal GetIncomeByCategory(string category)
+    public decimal GetIncomeByCategory(string category, int year, int month)
     {
-        List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionsSpendingsByCategory(category).ToList();
+        List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionSpendingsByCategoryAndMonth(category,year, month).ToList();
         decimal incomeBudget = transactionsSPendings
             .Where(t => t.Amount > 0)
             .Sum(t => t.Amount);

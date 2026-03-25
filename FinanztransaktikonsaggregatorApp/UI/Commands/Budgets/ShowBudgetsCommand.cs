@@ -15,18 +15,6 @@ public class ShowBudgetsCommand : ICommand
 
     public string Name { get; } = "Show Budgets";
 
-    private string TimeSpan()
-    {
-        DateTime now = DateTime.Now;
-
-        DateTime start = new DateTime(now.Year, now.Month, 1);
-        DateTime end = start.AddMonths(1).AddDays(-1);
-
-        string timespan  = $"{start:dd.MM} - {end:dd.MM}";
-        return timespan;
-
-    }
-
     public void Execute()
     {
         int cols = 5;
@@ -41,7 +29,7 @@ public class ShowBudgetsCommand : ICommand
         }
         else
         {
-            Console.WriteLine($"Timespan: {TimeSpan()}");
+            Console.WriteLine($"Timespan: {DateHelper.TimeSpan()}");
             Console.WriteLine();
             Console.WriteLine(MenuHelper.TableFormatterBudget(cols), "Category", "Limit", "Used", "Extra Income", "Leftover", "%");
             MenuHelper.CreateHorizontalLine();
@@ -50,10 +38,10 @@ public class ShowBudgetsCommand : ICommand
                 Console.WriteLine(MenuHelper.TableFormatterBudget(cols), 
                     budget.Category, 
                     $"{budget.LimitAmount:C2}", 
-                    $"{_budgetService.GetUsedBudget(budget.Category):C2}",
-                    $"{_budgetService.GetIncome(budget.Category):C2}", 
-                    $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category):C2}", 
-                    $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category)} %");
+                    $"{_budgetService.GetUsedBudget(budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth()):C2}",
+                    $"{_budgetService.GetIncome(budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth()):C2}", 
+                    $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth()):C2}", 
+                    $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth())} %");
             }
 
             Console.ReadKey();

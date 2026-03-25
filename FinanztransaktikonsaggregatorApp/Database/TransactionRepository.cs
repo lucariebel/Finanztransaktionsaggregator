@@ -35,16 +35,23 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
         return list;
     }
 
-    public List<Transaction> GetTransactionsSpendingsByCategory(string category)
+    public List<Transaction> GetTransactionSpendingsByCategoryAndMonth(string category, int year, int month)
     {
         var list = new List<Transaction>();
         using (var connection = GetOpenConnection())
         {
-            var sql = @"SELECT Amount FROM Transactions WHERE Category = @category";
+        var sql = @"
+            SELECT Amount, Date 
+            FROM Transactions 
+            WHERE Category = @category
+              AND strftime('%Y', Date) = @year
+              AND strftime('%m', Date) = @month";
 
             using (var command = new SqliteCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@category", category);
+                command.Parameters.AddWithValue("@year", year.ToString("D4"));
+                command.Parameters.AddWithValue("@month", month.ToString("D2"));
 
                 using (var reader = command.ExecuteReader())
                 {

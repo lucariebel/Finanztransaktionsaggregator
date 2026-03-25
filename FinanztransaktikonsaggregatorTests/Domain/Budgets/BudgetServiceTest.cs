@@ -37,11 +37,13 @@ public class BudgetServiceTests
     public void GetUsedBudget_ReturnsTransactionSum()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -50 });
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -70 });
+        var date = new DateTime(2025, 3, 1);
+
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -50, Date = date });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -70, Date = date });
 
         // ACT
-        var result = _service.GetUsedBudget("Food");
+        var result = _service.GetUsedBudget("Food", 2025, 3);
 
         // ASSERT
         Assert.Equal(120m, result);
@@ -50,12 +52,14 @@ public class BudgetServiceTests
     public void GetIncome_ReturnsCorrectIncome()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 100 });
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50 });
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -30 }); // ignorieren
+        var date = new DateTime(2025, 3, 1);
+
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 100, Date = date });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50, Date = date });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -30, Date = date });
 
         // ACT
-        var result = _service.GetIncome("Food");
+        var result = _service.GetIncome("Food", 2025, 3);
 
         // ASSERT
         Assert.Equal(150m, result);
@@ -65,14 +69,15 @@ public class BudgetServiceTests
     public void CalculateRest_ReturnsCorrectRemainingBudget()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -100 }); // Ausgabe
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50 });   // Einkommen
+        var date = new DateTime(2025, 3, 1);
+
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -100, Date = date });
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = 50, Date = date });
 
         // ACT
-        var result = _service.CalculateRest(300m, "Food");
+        var result = _service.CalculateRest(300m, "Food", 2025, 3);
 
         // ASSERT
-        // 300 + 50 - 100 = 250
         Assert.Equal(250m, result);
     }
 
@@ -80,10 +85,12 @@ public class BudgetServiceTests
     public void CalculatePercentage_ReturnsCorrectPercentage()
     {
         // ARRANGE
-        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -50 });
+        var date = new DateTime(2025, 3, 1);
+
+        _transactionService.AddTransaction(new Transaction { Category = "Food", Amount = -50, Date = date });
 
         // ACT
-        var result = _service.CalculatePercentage(200m, "Food");
+        var result = _service.CalculatePercentage(200m, "Food", 2025, 3);
 
         // ASSERT
         Assert.Equal(25m, result);
