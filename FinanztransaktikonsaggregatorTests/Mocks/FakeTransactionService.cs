@@ -13,7 +13,7 @@ class FakeTransactionService : ITransactionService
         _transactions.Add(transaction);
     }
 
-    public decimal GetTransactionsBycategory(string category)
+    public decimal GetUsedBudgetByCategory(string category)
     {
         return _transactions
             .Where(t => t.Category == category)

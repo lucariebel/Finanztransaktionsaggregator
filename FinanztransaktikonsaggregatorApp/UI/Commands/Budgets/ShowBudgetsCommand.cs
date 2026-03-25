@@ -43,11 +43,17 @@ public class ShowBudgetsCommand : ICommand
         {
             Console.WriteLine($"Timespan: {TimeSpan()}");
             Console.WriteLine();
-            Console.WriteLine(MenuHelper.TableFormatterBudget(cols), "Category", "Limit", "Used", "Leftover", "%");
+            Console.WriteLine(MenuHelper.TableFormatterBudget(cols), "Category", "Limit", "Used", "Extra Income", "Leftover", "%");
             MenuHelper.CreateHorizontalLine();
             foreach (var budget in budgets)
             {
-                Console.WriteLine(MenuHelper.TableFormatterBudget(cols), budget.Category, $"{budget.LimitAmount:C2}", $"{_budgetService.GetUsedBudget(budget.Category):C2}", $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category):C2}", $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category)} %");
+                Console.WriteLine(MenuHelper.TableFormatterBudget(cols), 
+                    budget.Category, 
+                    $"{budget.LimitAmount:C2}", 
+                    $"{_budgetService.GetUsedBudget(budget.Category):C2}",
+                    $"{_budgetService.GetIncome(budget.Category):C2}", 
+                    $"{_budgetService.CalculateRest(budget.LimitAmount, budget.Category):C2}", 
+                    $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category)} %");
             }
 
             Console.ReadKey();

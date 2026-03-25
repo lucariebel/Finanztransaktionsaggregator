@@ -6,6 +6,7 @@ public interface IBudgetService
 {
 	List<Budget> GetAllBudgets();
 	decimal GetUsedBudget(string category);
+	decimal GetIncome(string category);
 	decimal CalculateRest(decimal budget, string category);
 
 	decimal CalculatePercentage(decimal budget, string category);

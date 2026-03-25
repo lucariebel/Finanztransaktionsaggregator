@@ -23,22 +23,26 @@ public class BudgetService : IBudgetService
 
     public decimal GetUsedBudget(string category)
     {
-        decimal usedBudget = _transactionService.GetTransactionsBycategory(category);
+        decimal usedBudget = _transactionService.GetUsedBudgetByCategory(category);
 
-        return usedBudget;
+        return Math.Abs(usedBudget);
+    }
 
+    public decimal GetIncome(string category)
+    {
+        return _transactionService.GetIncomeByCategory(category);
     }
 
     public decimal CalculateRest(decimal budget, string category)
     {
         decimal used = GetUsedBudget(category);
-        decimal rest = budget - used;
+        decimal rest = budget + GetIncome(category) - used;
         return rest;
     }
 
     public decimal CalculatePercentage(decimal budget, string category)
     {
-        decimal used = GetUsedBudget(category); ;
+        decimal used = GetUsedBudget(category);
         decimal percentage = used / budget;
         return percentage * 100;
     }

@@ -3,6 +3,7 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Transactions;
 
 public interface ITransactionService
 {
-    decimal GetTransactionsBycategory(string category);
+    decimal GetUsedBudgetByCategory(string category);
+    decimal GetIncomeByCategory(string category);
     void AddTransaction(Transaction transaction);
 }
