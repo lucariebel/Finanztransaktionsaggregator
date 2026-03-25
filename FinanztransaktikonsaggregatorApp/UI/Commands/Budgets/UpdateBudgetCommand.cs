@@ -46,13 +46,19 @@ public class UpdateBudgetCommand : ICommand
             if (_budgets.Count > 0)
             {
                 Console.WriteLine("Enter the ID you want to update.");
-                Console.WriteLine("Press 'n' to cancel.");
+                Console.WriteLine("Press 'Enter' to cancel.");
 
                 string input = Console.ReadLine();
-                Console.WriteLine();
-                if ((input.Any(char.IsLetter)))
+                if (string.IsNullOrWhiteSpace(input))
                 {
                     updateBudget = false;
+                }
+                else if (input.Any(char.IsLetter))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Invalid key!");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
                 }
                 else
                 {
@@ -61,7 +67,9 @@ public class UpdateBudgetCommand : ICommand
             }
             else
             {
-                Console.ReadKey();
+                Console.WriteLine();
+                Console.WriteLine("Press key to return");
+                Console.ReadLine();
                 updateBudget = false;
             }
         }

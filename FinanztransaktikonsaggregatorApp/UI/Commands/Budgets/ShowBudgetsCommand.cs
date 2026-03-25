@@ -44,6 +44,8 @@ public class ShowBudgetsCommand : ICommand
                     $"{_budgetService.CalculatePercentage(budget.LimitAmount, budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth())} %");
             }
 
+            Console.WriteLine();
+            Console.WriteLine("Press key to return");
             Console.ReadKey();
         }
 

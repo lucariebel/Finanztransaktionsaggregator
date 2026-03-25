@@ -39,24 +39,53 @@ public class ImportDataCommand : ICommand
         return categorizedTransactions;
     }
 
-    public void Execute()
+    private void PrintTransactions(List<Transaction> transactionList)
     {
-        string filepath = InputHelper.GetRequiredString("Please enter the correct file path:");
-        filepath = InputHelper.GetExistingFilePath($"Your file does not exist, try again!",filepath);
-        var transactions = _importsService.ImportTransactions(filepath);
-        Console.WriteLine("Start Import...");
-        foreach (Transaction transaction in transactions.AllTransactions)
+        foreach (Transaction transaction in transactionList)
         {
             Console.ForegroundColor = transaction.Amount >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
             Console.WriteLine(transaction);
             Console.ResetColor();
         }
-        var categorized = AskUserForCategory(transactions.UncategorizedTransactions);
-        List<Transaction> mergedList = _importsService.MergeList(categorized, transactions.AllTransactions);
-        var resultMessage = _importsService.SaveTransacitons(mergedList);
-        Console.WriteLine(resultMessage);
-        Console.WriteLine("Finished Import. Press Enter to return"); 
-        
-        Console.ReadKey();
+    }
+
+    public void Execute()
+    {
+        bool importTransactions = true;
+
+        MenuHelper.CreateHeader("IMPORT DATA");
+        Console.WriteLine();
+        while (importTransactions)
+        {
+            Console.WriteLine("You want to import Transacions? \nPress y (Yes) Enter (No)");
+            var key = Console.ReadKey(true).Key;
+            Console.WriteLine();
+
+            if (key == ConsoleKey.Y)
+            {
+                string filepath = InputHelper.GetRequiredString("Please enter the correct file path:");
+                filepath = InputHelper.GetExistingFilePath($"Your file does not exist, try again!", filepath);
+                var transactions = _importsService.ImportTransactions(filepath);
+                Console.WriteLine("Start Import...");
+                PrintTransactions(transactions.AllTransactions);
+                var categorized = AskUserForCategory(transactions.UncategorizedTransactions);
+                List<Transaction> mergedList = _importsService.MergeList(categorized, transactions.AllTransactions);
+                PrintTransactions(mergedList);
+                var resultMessage = _importsService.SaveTransacitons(mergedList);
+                Console.WriteLine(resultMessage);
+                Console.WriteLine("Finished Import. Press Enter to return");
+                Console.ReadKey();
+                importTransactions = false;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                importTransactions = false;
+            }
+            else
+            {
+                Console.WriteLine("Invalid key!");
+                Console.WriteLine();
+            }
+        }
     }
 }

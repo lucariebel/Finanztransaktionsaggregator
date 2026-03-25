@@ -26,16 +26,25 @@ public class DeleteBudgetCommand : ICommand
             Console.Clear();
             MenuHelper.CreateHeader("DELETE BUDGET");
             Console.WriteLine();
-            MenuHelper.BudgetList(3, _budgetService.GetAllBudgets());
+            _budgets = _budgetService.GetAllBudgets();
+            MenuHelper.BudgetList(3, _budgets);
             if (_budgets.Count > 0)
             {
+
                 Console.WriteLine("Please enter the id you want to delete.");
-                Console.WriteLine("Press 'n' to cancel.");
+                Console.WriteLine("Press 'Enter' to cancel.");
                 string input = Console.ReadLine();
-                Console.WriteLine();
-                if((input.Any(char.IsLetter)))
+
+                if (string.IsNullOrWhiteSpace(input))
                 {
                     deleteBudget = false;
+                }
+                else if (input.Any(char.IsLetter))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Invalid key!");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
                 }
                 else
                 {
@@ -52,9 +61,12 @@ public class DeleteBudgetCommand : ICommand
             }
             else
             {
-                Console.ReadKey();
+                Console.WriteLine();
+                Console.WriteLine("Press key to return");
+                Console.ReadLine();
                 deleteBudget = false;
             }
+
         }
     }
 }
