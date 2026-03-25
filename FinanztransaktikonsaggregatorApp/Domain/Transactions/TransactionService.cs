@@ -13,6 +13,17 @@ public class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
     }
 
+    public List<Transaction> GetAll() => _transactionRepository.GetAll();
+
+    public List<Transaction> GetTopExpenses(int count)
+    {
+        return _transactionRepository.GetAll()
+            .Where(t => t.Amount < 0)
+            .OrderBy(t => t.Amount)
+            .Take(count)
+            .ToList();
+    }
+
     public decimal GetUsedBudgetByCategoryAndMonth(string category, int year, int month)
     {
         List<Transaction> transactionsSPendings = _transactionRepository.GetTransactionSpendingsByCategoryAndMonth(category, year, month).ToList();

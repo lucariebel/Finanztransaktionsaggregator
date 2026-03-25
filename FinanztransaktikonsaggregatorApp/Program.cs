@@ -2,6 +2,7 @@
 using FinanztransaktikonsaggregatorApp.Database;
 using FinanztransaktikonsaggregatorApp.Domain.Budgets;
 using FinanztransaktikonsaggregatorApp.Domain.Category;
+using FinanztransaktikonsaggregatorApp.Domain.Accounts;
 using FinanztransaktikonsaggregatorApp.Domain.Dashboard;
 using FinanztransaktikonsaggregatorApp.Domain.Imports;
 using FinanztransaktikonsaggregatorApp.Domain.Transactions;
@@ -16,9 +17,10 @@ var dbManager = new DatabaseManager(appConfig);
 var transactionRepo = new TransactionRepository(appConfig);
 var transactionService = new TransactionService(transactionRepo);
 var accountRepo = new AccountRepository(appConfig);
-var dashboardService = new DashboardService(transactionRepo, accountRepo);
+var accountService = new AccountService(accountRepo);
 var budgetRepository = new BudgetRepository(appConfig);
 var budgetService = new BudgetService(budgetRepository, transactionService);
+var dashboardService = new DashboardService(transactionService, accountService);
 var categoryService = new CategoryService();
 var importService = new ImportsService(transactionService, categoryService);
 
@@ -28,7 +30,7 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 var mainCommands = new List<ICommand>
 {
-    new DashboardCommand(dashboardService),
+    new DashboardCommand(dashboardService, budgetService, transactionService),
     new BudgetMenuCommand(budgetService),
     new ImportDataCommand(importService),
     new ExportCommand()

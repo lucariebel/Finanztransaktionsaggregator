@@ -1,32 +1,33 @@
-using FinanztransaktikonsaggregatorApp.Database;
+using FinanztransaktikonsaggregatorApp.Domain.Accounts;
+using FinanztransaktikonsaggregatorApp.Domain.Transactions;
 using FinanztransaktikonsaggregatorApp.Entities;
 
 namespace FinanztransaktikonsaggregatorApp.Domain.Dashboard;
 
 public class DashboardService : IDashboardService
 {
-    private readonly IAccountRepository _accountRepo;
-    private readonly ITransactionRepository _transactionRepo;
+    private readonly IAccountService _accountService;
+    private readonly ITransactionService _transactionService;
 
-    public DashboardService(ITransactionRepository transactionRepo, IAccountRepository accountRepo)
+    public DashboardService(ITransactionService transactionService, IAccountService accountService)
     {
-        _transactionRepo = transactionRepo;
-        _accountRepo = accountRepo;
+        _transactionService = transactionService;
+        _accountService = accountService;
     }
 
     public decimal GetTotalNetWorth()
     {
-        var totalInitialBalances = _accountRepo.GetAll().Sum(a => a.InitialBalance);
+        var totalInitialBalances = _accountService.GetAll().Sum(a => a.InitialBalance);
 
-        var totalTransactionSum = _transactionRepo.GetAll().Sum(t => t.Amount);
+        var totalTransactionSum = _transactionService.GetAll().Sum(t => t.Amount);
 
         return totalInitialBalances + totalTransactionSum;
     }
 
     public Dictionary<Account, decimal> GetBalancesPerAccount()
     {
-        var allTransactions = _transactionRepo.GetAll();
-        var allAccounts = _accountRepo.GetAll();
+        var allTransactions = _transactionService.GetAll();
+        var allAccounts = _accountService.GetAll();
 
         var balances = new Dictionary<Account, decimal>();
 
