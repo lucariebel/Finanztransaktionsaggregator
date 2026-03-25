@@ -21,6 +21,13 @@ public class BudgetService : IBudgetService
         return _budgetRepository.GetAll().ToList();
     }
 
+    public List<Budget> GetBudgetWarnings(decimal threshold)
+    {
+        return GetAllBudgets()
+            .Where(b => CalculatePercentage(b.LimitAmount, b.Category) > threshold)
+            .ToList();
+    }
+
     public decimal GetUsedBudget(string category)
     {
         decimal usedBudget = _transactionService.GetUsedBudgetByCategory(category);
@@ -62,6 +69,7 @@ public class BudgetService : IBudgetService
     {
         _budgetRepository.Delete(id);
     }
+    
     public Budget UpdateBudget(int id, string category, decimal limit)
     {
         Budget updateBudget = new Budget

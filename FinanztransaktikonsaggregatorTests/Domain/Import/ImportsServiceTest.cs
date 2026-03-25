@@ -33,7 +33,7 @@ public class ImportsServiceTests
 
         // ASSERT
         Assert.Equal("Saved succesfully", result);
-        Assert.Equal(2, _transactionService.GetAllTransactions().Count);
+        Assert.Equal(2, _transactionService.GetAll().Count);
     }
 
     [Fact]
