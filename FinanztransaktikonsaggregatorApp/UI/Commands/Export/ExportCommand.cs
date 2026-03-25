@@ -1,3 +1,5 @@
+using FinanztransaktikonsaggregatorApp.Controllers.Helper;
+
 namespace FinanztransaktikonsaggregatorApp.UI.Commands;
 
 public class ExportCommand : ICommand
@@ -6,7 +8,8 @@ public class ExportCommand : ICommand
 
     public void Execute()
     {
-        Console.WriteLine("...");
+        MenuHelper.CreateHeader("IMPORT DATA");
+        Console.WriteLine();
         Console.ReadKey();
     }
 }
