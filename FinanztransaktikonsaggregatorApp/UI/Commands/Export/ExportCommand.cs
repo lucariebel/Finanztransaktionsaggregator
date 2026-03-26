@@ -13,11 +13,22 @@ public class ExportCommand : ICommand
         _exportService = exportService;
     }
 
-    private void Export()
+    private void ExportCSV()
     {
         string filepath = InputHelper.GetRequiredString("Please enter the file path:");
         Console.WriteLine("Start Export...");
-        string resultMessage = _exportService.ExportTransactions(filepath);
+        string resultMessage = _exportService.ExportTransactionsAsCSV(filepath);
+        Console.WriteLine(resultMessage);
+        Console.WriteLine($"Export finished. File saved at {filepath}. ");
+        Console.WriteLine("Press Enter to return.");
+        Console.ReadKey();
+    }
+
+    private void ExportPDF()
+    {
+        string filepath = InputHelper.GetRequiredString("Please enter the file path:");
+        Console.WriteLine("Start Export...");
+        string resultMessage = _exportService.ExportTransactionsAsPDF(filepath);
         Console.WriteLine(resultMessage);
         Console.WriteLine($"Export finished. File saved at {filepath}. ");
         Console.WriteLine("Press Enter to return.");
@@ -30,6 +41,6 @@ public class ExportCommand : ICommand
         Console.WriteLine();
 
         ConsoleHelper.ConfirmAndExecute("You want to export Transactions?", 
-            () => Export());
+            () => ExportPDF());
     }
 }

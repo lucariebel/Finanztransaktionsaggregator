@@ -4,5 +4,6 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Imports;
 
 public interface IExportService
 {
-    string ExportTransactions(string filepath);
+    string ExportTransactionsAsCSV(string filepath);
+    string ExportTransactionsAsPDF(string filepath);
 }
