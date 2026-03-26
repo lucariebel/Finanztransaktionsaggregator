@@ -13,26 +13,29 @@ public class ExportCommand : ICommand
         _exportService = exportService;
     }
 
-    private void ExportCSV()
+    private void Export(Func<string, string> exportFunc)
     {
         string filepath = InputHelper.GetRequiredString("Please enter the file path:");
         Console.WriteLine("Start Export...");
-        string resultMessage = _exportService.ExportTransactionsAsCSV(filepath);
+        string resultMessage = exportFunc(filepath);
         Console.WriteLine(resultMessage);
         Console.WriteLine($"Export finished. File saved at {filepath}. ");
         Console.WriteLine("Press Enter to return.");
         Console.ReadKey();
     }
 
-    private void ExportPDF()
+    private void ExportTransactions()
     {
-        string filepath = InputHelper.GetRequiredString("Please enter the file path:");
-        Console.WriteLine("Start Export...");
-        string resultMessage = _exportService.ExportTransactionsAsPDF(filepath);
-        Console.WriteLine(resultMessage);
-        Console.WriteLine($"Export finished. File saved at {filepath}. ");
-        Console.WriteLine("Press Enter to return.");
-        Console.ReadKey();
+        Console.WriteLine("Would you like to export the transactions as a .csv or a .pdf file?");
+        string fileFormat = InputHelper.GetRequiredString("Please enter the file format:");
+        if(fileFormat == ".pdf")
+        {
+            Export(_exportService.ExportTransactionsAsPDF);
+        }
+        else
+        {
+            Export(_exportService.ExportTransactionsAsCSV);
+        }
     }
 
     public void Execute()
@@ -41,6 +44,6 @@ public class ExportCommand : ICommand
         Console.WriteLine();
 
         ConsoleHelper.ConfirmAndExecute("You want to export Transactions?", 
-            () => ExportPDF());
+            () => ExportTransactions());
     }
 }
