@@ -12,37 +12,24 @@ public class ExportCommand : ICommand
     {
         _exportService = exportService;
     }
+
+    private void Export()
+    {
+        string filepath = InputHelper.GetRequiredString("Please enter the file path:");
+        Console.WriteLine("Start Export...");
+        string resultMessage = _exportService.ExportTransactions(filepath);
+        Console.WriteLine(resultMessage);
+        Console.WriteLine($"Export finished. File saved at {filepath}. ");
+        Console.WriteLine("Press Enter to return.");
+        Console.ReadKey();
+    }
+
     public void Execute()
     {
-        bool exportTransacion = true;
-
         MenuHelper.CreateHeader("Export DATA");
         Console.WriteLine();
-        while (exportTransacion)
-        {
-            Console.WriteLine("You want to Export Transacions? \nPress y (Yes) Enter (No)");
-            var key = Console.ReadKey(true).Key;
-            Console.WriteLine();
 
-            if (key == ConsoleKey.Y)
-            {
-                string filepath = InputHelper.GetRequiredString("Please enter the file path:");
-                Console.WriteLine("Start Export...");
-                string resultMessage = _exportService.ExportTransactions(filepath);
-                Console.WriteLine(resultMessage);
-                Console.WriteLine($"Export finished. File saved at {filepath}. Press Enter to return.");
-                Console.ReadKey();
-                exportTransacion = false;
-            }
-            else if (key == ConsoleKey.Enter)
-            {
-                exportTransacion = false;
-            }
-            else
-            {
-                Console.WriteLine("Invalid key!");
-                Console.WriteLine();
-            }
-        }
+        ConsoleHelper.ConfirmAndExecute("You want to export Transactions?", 
+            () => Export());
     }
 }
