@@ -36,7 +36,7 @@ public class ImportsService : IImportsService
                 Amount = ParserHelper.ParseDecimal(parts[1]),
                 Description = parts[2],
                 Category = _categoryService.GetCategoryForDescription(parts[2]),
-                AccountNumber = ParserHelper.ParseInteger(parts[3])
+                AccountNumber = ParserHelper.ParseRequiredId(parts[3])
             };
             transactions.Add(transaction);
         }

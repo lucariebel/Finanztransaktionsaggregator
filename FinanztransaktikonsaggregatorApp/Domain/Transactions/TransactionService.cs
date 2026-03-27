@@ -1,5 +1,6 @@
 using FinanztransaktikonsaggregatorApp.Entities;
 using FinanztransaktikonsaggregatorApp.Database;
+using FinanztransaktikonsaggregatorApp.Filter;
 
 namespace FinanztransaktikonsaggregatorApp.Domain.Transactions;
 
@@ -45,5 +46,9 @@ public class TransactionService : ITransactionService
     public void AddTransaction(Transaction transaction)
     {
         _transactionRepository.Insert(transaction);
+    }
+    public List<Transaction> GetFilteredTransactions(TransactionFilter transactionFilter)
+    {
+        return _transactionRepository.GetFiltered(transactionFilter);
     }
 }

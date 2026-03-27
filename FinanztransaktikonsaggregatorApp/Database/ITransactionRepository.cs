@@ -1,4 +1,5 @@
 using FinanztransaktikonsaggregatorApp.Entities;
+using FinanztransaktikonsaggregatorApp.Filter;
 
 namespace FinanztransaktikonsaggregatorApp.Database;
 
@@ -10,4 +11,5 @@ public interface ITransactionRepository
     List<Transaction> GetTransactionsByMonth(int year, int month);
     Transaction Update(Transaction transaction);
     void Delete(Transaction transaction);
+    List<Transaction> GetFiltered(TransactionFilter transactionFilter);
 }

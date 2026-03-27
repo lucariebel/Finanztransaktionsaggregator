@@ -31,30 +31,10 @@ public class AddNewBudgetCommand : ICommand
 
     public void Execute()
     {
-        bool addBudget = true;
-
         MenuHelper.CreateHeader("ADD BDUGET");
         Console.WriteLine();
 
-        while (addBudget)
-        {
-            Console.WriteLine("You want to add a new Budget? \nPress y (Yes) Enter (No)");
-            var key = Console.ReadKey(true).Key;
-            Console.WriteLine();
-            if (key == ConsoleKey.Y)
-            {
-                AddBudget();
-            }
-            else if (key == ConsoleKey.Enter)
-            {
-                addBudget = false;
-            }
-            else
-            {
-                Console.WriteLine("Invalid key!");
-                Console.WriteLine();
-            }
-        }
-
+        ConsoleHelper.ConfirmAndExecute("You want to add a new Budget?",
+            () => AddBudget());
     }
 }
