@@ -4,6 +4,7 @@ using System.Text;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using FinanztransaktikonsaggregatorApp.Filter;
 
 namespace FinanztransaktikonsaggregatorApp.Domain.Imports;
 
@@ -17,23 +18,29 @@ public class ExportService : IExportService
 
     }
 
-    public string ExportTransactionsAsCSV(string filepath)
+    public string ExportTransactionsAsCSV(string filepath, TransactionFilter transactionFilter)
     {
-        List<Transaction> transactions =_transactionService.GetAll();
+        List<Transaction> transactions =_transactionService.GetFilteredTransactions(transactionFilter);
+
+        filepath = Path.ChangeExtension(filepath, ".csv");
+
         using (var writer = new StreamWriter(filepath, false, Encoding.UTF8))
         {
-            writer.WriteLine("Date, Amount, Description, Category, AccountNumber");
+            writer.WriteLine("Id, Date, Amount, Description, Category, AccountNumber");
             foreach(var transaction in transactions)
             {
-                writer.WriteLine($"{transaction.Date},{transaction.Amount},{transaction.Description},{transaction.Category},{transaction.AccountNumber}");
+                writer.WriteLine($"{transaction.Id},{transaction.Date},{transaction.Amount},{transaction.Description},{transaction.Category},{transaction.AccountNumber}");
             }
         }
         return "Succesfully exported";
     }
 
-    public string ExportTransactionsAsPDF(string filepath)
+    public string ExportTransactionsAsPDF(string filepath, TransactionFilter transactionFilter)
     {
-        List<Transaction> transactions = _transactionService.GetAll();
+        List<Transaction> transactions = _transactionService.GetFilteredTransactions(transactionFilter);
+        string extension = Path.GetExtension(filepath);
+
+        filepath = Path.ChangeExtension(filepath, ".pdf");
 
         QuestPDF.Settings.License = LicenseType.Community;
         Document.Create(container =>
