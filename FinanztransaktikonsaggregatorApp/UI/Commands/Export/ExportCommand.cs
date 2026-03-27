@@ -14,13 +14,13 @@ public class ExportCommand : ICommand
         _exportService = exportService;
     }
 
-    private void Export(Func<string, TransactionFilter, string> exportFunc)
+    private void Export(Func<string, TransactionFilter, string> exportFunc, string fileFormat)
     {
         int? year = null;
         int? month = null;
         int? day = null;
 
-        string filepath = InputHelper.GetRequiredString("Please enter the file path:");
+        string filepath = InputHelper.GetRequiredString("Please enter the file path and name (example: for windows:C:\\Users\\user\\OneDrive\\Desktop\\example for linux:/home/user/Desktop) :");
 
         List<int> accountNumbers = InputHelper.GetIntList("Enter Account Numbers (comma separated or leave empty for all):");
 
@@ -64,7 +64,7 @@ public class ExportCommand : ICommand
         Console.WriteLine("Start Export...");
         string resultMessage = exportFunc(filepath, filter);
         Console.WriteLine(resultMessage);
-        Console.WriteLine($"Export finished. File saved at {filepath}. ");
+        Console.WriteLine($"Export finished. File saved at {filepath}.{fileFormat} ");
         Console.WriteLine("Press Enter to return.");
         Console.ReadKey();
     }
@@ -72,15 +72,30 @@ public class ExportCommand : ICommand
     private void ExportTransactions()
     {
         Console.WriteLine("Would you like to export the transactions as a .csv or a .pdf file?");
-        string fileFormat = InputHelper.GetRequiredString("Please enter the file format as csv or pdf:");
-        fileFormat = fileFormat.ToLower();
-        if(fileFormat == "pdf")
+
+        string fileFormat;
+
+        while (true)
         {
-            Export(_exportService.ExportTransactionsAsPDF);
+            fileFormat = InputHelper
+                .GetRequiredString("Please enter the file format as csv or pdf:")
+                .ToLower();
+
+            if (fileFormat == "pdf" || fileFormat == "csv")
+            {
+                break;
+            }
+
+            Console.WriteLine("Invalid input. Please enter 'csv' or 'pdf'.");
         }
-        else if(fileFormat == "csv")
+
+        if (fileFormat == "pdf")
         {
-            Export(_exportService.ExportTransactionsAsCSV);
+            Export(_exportService.ExportTransactionsAsPDF, fileFormat);
+        }
+        else
+        {
+            Export(_exportService.ExportTransactionsAsCSV, fileFormat);
         }
     }
 

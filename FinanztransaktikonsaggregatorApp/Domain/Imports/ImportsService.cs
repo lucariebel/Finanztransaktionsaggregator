@@ -24,7 +24,7 @@ public class ImportsService : IImportsService
         var transactions = new List<Transaction>();
         foreach (var line in lines.Skip(1))
         {
-            var parts = line.Split(',');
+            var parts = line.Split(';');
             var transaction = new Transaction
             {
                 Date = DateTime.ParseExact(
@@ -35,8 +35,8 @@ public class ImportsService : IImportsService
                 ),
                 Amount = ParserHelper.ParseDecimal(parts[1]),
                 Description = parts[2],
-                Category = _categoryService.GetCategoryForDescription(parts[2]),
-                AccountNumber = ParserHelper.ParseRequiredId(parts[3])
+                Category = _categoryService.GetCategoryForDescription(parts[3]),
+                AccountNumber = ParserHelper.ParseRequiredId(parts[4])
             };
             transactions.Add(transaction);
         }

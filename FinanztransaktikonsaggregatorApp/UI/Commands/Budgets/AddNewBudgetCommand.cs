@@ -31,7 +31,7 @@ public class AddNewBudgetCommand : ICommand
 
     public void Execute()
     {
-        MenuHelper.CreateHeader("ADD BDUGET");
+        MenuHelper.CreateHeader("ADD BUDGET");
         Console.WriteLine();
 
         ConsoleHelper.ConfirmAndExecute("You want to add a new Budget?",

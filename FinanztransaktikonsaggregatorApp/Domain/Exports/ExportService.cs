@@ -1,10 +1,11 @@
 using FinanztransaktikonsaggregatorApp.Domain.Transactions;
 using FinanztransaktikonsaggregatorApp.Entities;
-using System.Text;
+using FinanztransaktikonsaggregatorApp.Filter;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using FinanztransaktikonsaggregatorApp.Filter;
+using System.Globalization;
+using System.Text;
 
 namespace FinanztransaktikonsaggregatorApp.Domain.Imports;
 
@@ -26,10 +27,10 @@ public class ExportService : IExportService
 
         using (var writer = new StreamWriter(filepath, false, Encoding.UTF8))
         {
-            writer.WriteLine("Id, Date, Amount, Description, Category, AccountNumber");
+            writer.WriteLine("Date;Amount;Description;Category;AccountNumber");
             foreach(var transaction in transactions)
             {
-                writer.WriteLine($"{transaction.Id},{transaction.Date},{transaction.Amount},{transaction.Description},{transaction.Category},{transaction.AccountNumber}");
+                writer.WriteLine($"{transaction.Date:dd.MM.yyyy};{transaction.Amount:0.00};{transaction.Description};{transaction.Category};{transaction.AccountNumber}");
             }
         }
         return "Succesfully exported";
@@ -82,7 +83,7 @@ public class ExportService : IExportService
                     {
                         table.Cell().Text(transaction.Id.ToString());
                         table.Cell().Text(transaction.Date.ToString("yyyy-MM-dd"));
-                        table.Cell().Text(transaction.Amount.ToString("0.00"));
+                        table.Cell().Text(transaction.Amount.ToString("C", CultureInfo.GetCultureInfo("de-DE")));
                         table.Cell().Text(transaction.Description).WrapAnywhere();
                         table.Cell().Text(transaction.Category);
                         table.Cell().Text(transaction.AccountNumber.ToString());
