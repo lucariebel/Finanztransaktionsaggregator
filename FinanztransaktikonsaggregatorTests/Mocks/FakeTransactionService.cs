@@ -1,5 +1,6 @@
-﻿using FinanztransaktikonsaggregatorApp.Domain.Transactions;
+using FinanztransaktikonsaggregatorApp.Domain.Transactions;
 using FinanztransaktikonsaggregatorApp.Entities;
+using FinanztransaktikonsaggregatorApp.Filter;
 
 namespace FinanztransaktikonsaggregatorTests.Mocks;
 
@@ -44,5 +45,67 @@ class FakeTransactionService : ITransactionService
                         && t.Date.Month == month)
             .Where(t => t.Amount > 0)
             .Sum(t => t.Amount);
+    }
+
+    public List<Transaction> GetFilteredTransactions(TransactionFilter transactionFilter)
+    {
+        List<Transaction> filteredTransactions = _transactions.ToList();
+
+        if (transactionFilter.AccountNumbers != null && transactionFilter.AccountNumbers.Any())
+            filteredTransactions = filteredTransactions
+                .Where(t => transactionFilter.AccountNumbers.Contains(t.AccountNumber))
+                .ToList();
+
+        if (transactionFilter.Categories != null && transactionFilter.Categories.Any())
+            filteredTransactions = filteredTransactions
+                .Where(t => transactionFilter.Categories.Contains(t.Category))
+                .ToList();
+
+        if (transactionFilter.StartDate.HasValue)
+            filteredTransactions = filteredTransactions
+                .Where(t => t.Date >= transactionFilter.StartDate.Value)
+                .ToList();
+
+        if (transactionFilter.EndDate.HasValue)
+            filteredTransactions = filteredTransactions
+                .Where(t => t.Date <= transactionFilter.EndDate.Value)
+                .ToList();
+
+        if (!transactionFilter.StartDate.HasValue && !transactionFilter.EndDate.HasValue)
+        {
+            if (transactionFilter.Year.HasValue)
+                filteredTransactions = filteredTransactions
+                    .Where(t => t.Date.Year == transactionFilter.Year.Value)
+                    .ToList();
+
+            if (transactionFilter.Month.HasValue)
+                filteredTransactions = filteredTransactions
+                    .Where(t => t.Date.Month == transactionFilter.Month.Value)
+                    .ToList();
+
+            if (transactionFilter.Day.HasValue)
+                filteredTransactions = filteredTransactions
+                    .Where(t => t.Date.Day == transactionFilter.Day.Value)
+                    .ToList();
+        }
+
+        if (transactionFilter.MinAmount.HasValue)
+            filteredTransactions = filteredTransactions
+                .Where(t => t.Amount >= transactionFilter.MinAmount.Value)
+                .ToList();
+
+        if (transactionFilter.MaxAmount.HasValue)
+            filteredTransactions = filteredTransactions
+                .Where(t => t.Amount <= transactionFilter.MaxAmount.Value)
+                .ToList();
+
+        if (!string.IsNullOrWhiteSpace(transactionFilter.DescriptionContains))
+            filteredTransactions = filteredTransactions
+                .Where(t => t.Description != null &&
+                            t.Description.Contains(transactionFilter.DescriptionContains,
+                                StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+        return filteredTransactions;
     }
 }

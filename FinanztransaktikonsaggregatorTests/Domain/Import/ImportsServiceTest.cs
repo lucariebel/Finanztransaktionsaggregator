@@ -75,9 +75,9 @@ public class ImportsServiceTests
 
         File.WriteAllLines(filePath, new[]
         {
-            "Date,Amount,Description,Account",
-            "2024-01-01,50,Aldi Einkauf,123",
-            "2024-01-02,20,Unknown Shop,123"
+            "Date;Amount;Description;CategoryHint;Account",
+            "2024-01-01;50;Aldi Einkauf;Aldi;123",
+            "2024-01-02;20;Unknown Shop;Unknown Shop;123"
         });
 
         // ACT
