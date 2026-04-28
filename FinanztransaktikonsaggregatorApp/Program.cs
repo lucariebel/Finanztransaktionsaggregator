@@ -11,6 +11,7 @@ using FinanztransaktikonsaggregatorApp.UI.Commands;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Budgets;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Dashboard;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Import;
+using FinanztransaktikonsaggregatorApp.UI.Commands.Accounts;
 
 var appConfig = new AppConfig();
 var dbManager = new DatabaseManager(appConfig);
@@ -34,7 +35,8 @@ var mainCommands = new List<ICommand>
     new DashboardCommand(dashboardService, budgetService, transactionService),
     new BudgetMenuCommand(budgetService),
     new ImportDataCommand(importService),
-    new ExportCommand(exportService)
+    new ExportCommand(exportService),
+    new AccountMenuCommand(accountService)
 };
 
 var mainMenu = new MenuController("Home", mainCommands);
