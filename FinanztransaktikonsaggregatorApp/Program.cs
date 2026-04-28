@@ -14,6 +14,7 @@ using FinanztransaktikonsaggregatorApp.UI.Commands.Dashboard;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Import;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Accounts;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Stocks;
+using FinanztransaktikonsaggregatorApp.Domain.Stocks.Prices;
 
 var appConfig = new AppConfig();
 var dbManager = new DatabaseManager(appConfig);
@@ -28,7 +29,8 @@ var categoryService = new CategoryService();
 var importService = new ImportsService(transactionService, categoryService);
 var exportService = new ExportService(transactionService);
 var stockRepository = new StockRepository(appConfig);
-var stockService = new StockService(stockRepository);
+var priceProvider = new FakeStockPriceProvider();
+var stockService = new StockService(stockRepository, priceProvider);
 
 
 dbManager.Initialize();

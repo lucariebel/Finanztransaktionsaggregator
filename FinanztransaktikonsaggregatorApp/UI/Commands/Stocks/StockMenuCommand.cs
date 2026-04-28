@@ -22,7 +22,8 @@ public class StockMenuCommand : ICommand
             new ShowStocksCommand(_stockService),
             new AddStockCommand(_stockService),
             new UpdateStockCommand(_stockService),
-            new DeleteStockCommand(_stockService)
+            new DeleteStockCommand(_stockService),
+            new UpdateStockPricesCommand(_stockService)
         };
 
         var stockMenu = new MenuController("STOCK MANAGEMENT", stockCommands);

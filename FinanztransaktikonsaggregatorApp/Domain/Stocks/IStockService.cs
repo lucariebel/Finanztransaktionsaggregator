@@ -11,6 +11,7 @@ public interface IStockService
     Stock Insert(Stock stock);
 
     Stock Update(Stock stock);
+    void UpdatePrices();
 
     void Delete(Stock stock);
 }

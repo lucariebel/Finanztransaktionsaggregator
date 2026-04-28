@@ -1,4 +1,5 @@
 using FinanztransaktikonsaggregatorApp.Database;
+using FinanztransaktikonsaggregatorApp.Domain.Stocks.Prices;
 using FinanztransaktikonsaggregatorApp.Entities;
 
 namespace FinanztransaktikonsaggregatorApp.Domain.Stocks;
@@ -6,10 +7,12 @@ namespace FinanztransaktikonsaggregatorApp.Domain.Stocks;
 public class StockService : IStockService
 {
     private readonly IStockRepository _stockRepository;
+    private readonly IStockPriceProvider _priceProvider;
 
-    public StockService(IStockRepository stockRepository)
+    public StockService(IStockRepository stockRepository, IStockPriceProvider priceProvider)
     {
         _stockRepository = stockRepository;
+        _priceProvider = priceProvider;
     }
 
     public List<Stock> GetAll()
@@ -37,6 +40,24 @@ public class StockService : IStockService
     public void Delete(Stock stock)
     {
         _stockRepository.Delete(stock);
+    }
+
+    public void UpdatePrices()
+    {
+        var stocks = _stockRepository.GetAll();
+
+        foreach (var stock in stocks)
+        {
+            var quote = _priceProvider.GetPrice(stock.TickerSymbol);
+
+            stock.PreviousKnownPrice = stock.LastKnownPrice;
+            stock.PreviousUpdated = stock.LastUpdated;
+
+            stock.LastKnownPrice = quote.Price;
+            stock.LastUpdated = quote.Timestamp;
+
+            _stockRepository.Update(stock);
+        }
     }
 
     private static void PrepareStockForSaving(Stock stock)
