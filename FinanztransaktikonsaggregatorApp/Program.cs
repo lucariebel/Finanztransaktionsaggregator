@@ -29,7 +29,7 @@ var categoryService = new CategoryService();
 var importService = new ImportsService(transactionService, categoryService);
 var exportService = new ExportService(transactionService);
 var stockRepository = new StockRepository(appConfig);
-var priceProvider = new FakeStockPriceProvider();
+var priceProvider = new StooqStockPriceProvider();
 var stockService = new StockService(stockRepository, priceProvider);
 
 
