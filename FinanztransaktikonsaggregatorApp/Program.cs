@@ -6,12 +6,14 @@ using FinanztransaktikonsaggregatorApp.Domain.Accounts;
 using FinanztransaktikonsaggregatorApp.Domain.Dashboard;
 using FinanztransaktikonsaggregatorApp.Domain.Imports;
 using FinanztransaktikonsaggregatorApp.Domain.Transactions;
+using FinanztransaktikonsaggregatorApp.Domain.Stocks;
 using FinanztransaktikonsaggregatorApp.UI;
 using FinanztransaktikonsaggregatorApp.UI.Commands;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Budgets;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Dashboard;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Import;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Accounts;
+using FinanztransaktikonsaggregatorApp.UI.Commands.Stocks;
 
 var appConfig = new AppConfig();
 var dbManager = new DatabaseManager(appConfig);
@@ -25,6 +27,8 @@ var dashboardService = new DashboardService(transactionService, accountService);
 var categoryService = new CategoryService();
 var importService = new ImportsService(transactionService, categoryService);
 var exportService = new ExportService(transactionService);
+var stockRepository = new StockRepository(appConfig);
+var stockService = new StockService(stockRepository);
 
 
 dbManager.Initialize();
@@ -36,7 +40,9 @@ var mainCommands = new List<ICommand>
     new BudgetMenuCommand(budgetService),
     new ImportDataCommand(importService),
     new ExportCommand(exportService),
-    new AccountMenuCommand(accountService)
+    new AccountMenuCommand(accountService),
+    new StockMenuCommand(stockService)
+
 };
 
 var mainMenu = new MenuController("Home", mainCommands);
