@@ -16,7 +16,7 @@ public class StockRepository : BaseRepository, IStockRepository
         using (var connection = GetOpenConnection())
         {
             var sql =
-                "SELECT Id, TickerSymbol, Name, Quantity, AverageBuyPrice, LastKnownPrice, LastUpdated FROM Stocks";
+                "SELECT Id, TickerSymbol, Name, Quantity, AverageBuyPrice, LastKnownPrice, LastUpdated, PreviousKnownPrice, PreviousUpdated FROM Stocks";
 
             using (var command = new SqliteCommand(sql, connection))
             using (var reader = command.ExecuteReader())
@@ -30,7 +30,9 @@ public class StockRepository : BaseRepository, IStockRepository
                         Quantity = reader.GetDecimal(3),
                         AverageBuyPrice = reader.GetDecimal(4),
                         LastKnownPrice = reader.GetDecimal(5),
-                        LastUpdated = DateTime.Parse(reader.GetString(6))
+                        LastUpdated = DateTime.Parse(reader.GetString(6)),
+                        PreviousKnownPrice = reader.IsDBNull(7) ? null : reader.GetDecimal(7),
+                        PreviousUpdated = reader.IsDBNull(8) ? null : DateTime.Parse(reader.GetString(8))
                     });
             }
         }
@@ -43,7 +45,7 @@ public class StockRepository : BaseRepository, IStockRepository
         using (var connection = GetOpenConnection())
         {
             var sql =
-                "SELECT Id, TickerSymbol, Name, Quantity, AverageBuyPrice, LastKnownPrice, LastUpdated FROM Stocks WHERE Id = @id";
+                "SELECT Id, TickerSymbol, Name, Quantity, AverageBuyPrice, LastKnownPrice, LastUpdated, PreviousKnownPrice, PreviousUpdated FROM Stocks WHERE Id = @id";
 
             using (var command = new SqliteCommand(sql, connection))
             {
@@ -60,7 +62,9 @@ public class StockRepository : BaseRepository, IStockRepository
                             Quantity = reader.GetDecimal(3),
                             AverageBuyPrice = reader.GetDecimal(4),
                             LastKnownPrice = reader.GetDecimal(5),
-                            LastUpdated = DateTime.Parse(reader.GetString(6))
+                            LastUpdated = DateTime.Parse(reader.GetString(6)),
+                            PreviousKnownPrice = reader.IsDBNull(7) ? null : reader.GetDecimal(7),
+                            PreviousUpdated = reader.IsDBNull(8) ? null : DateTime.Parse(reader.GetString(8))
                         };
                 }
             }
@@ -74,9 +78,9 @@ public class StockRepository : BaseRepository, IStockRepository
         using (var connection = GetOpenConnection())
         {
             var sql = @"
-                    INSERT INTO Stocks (TickerSymbol, Name, Quantity, AverageBuyPrice, LastKnownPrice, LastUpdated) 
-                    VALUES (@tickerSymbol, @name, @quantity, @averageBuyPrice, @lastKnownPrice, @lastUpdated)
-                    RETURNING Id;";
+                    INSERT INTO Stocks (TickerSymbol, Name, Quantity, AverageBuyPrice, LastKnownPrice, LastUpdated, PreviousKnownPrice, PreviousUpdated) 
+                    VALUES (@tickerSymbol, @name, @quantity, @averageBuyPrice, @lastKnownPrice, @lastUpdated, @previousKnownPrice, @previousUpdated)
+                    RETURNING Id";
 
             using (var command = new SqliteCommand(sql, connection))
             {
@@ -89,6 +93,12 @@ public class StockRepository : BaseRepository, IStockRepository
 
                 command.Parameters.AddWithValue("@lastUpdated",
                     stock.LastUpdated.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                command.Parameters.AddWithValue("@previousKnownPrice",
+                    stock.PreviousKnownPrice.HasValue ? stock.PreviousKnownPrice.Value : DBNull.Value);
+
+                command.Parameters.AddWithValue("@previousUpdated",
+                    stock.PreviousUpdated.HasValue ? stock.PreviousUpdated.Value.ToString("yyyy-MM-dd HH:mm:ss") : DBNull.Value);
 
                 var newId = (long)command.ExecuteScalar();
 
@@ -110,7 +120,9 @@ public class StockRepository : BaseRepository, IStockRepository
                         Quantity = @quantity, 
                         AverageBuyPrice = @averageBuyPrice, 
                         LastKnownPrice = @lastKnownPrice, 
-                        LastUpdated = @lastUpdated 
+                        LastUpdated = @lastUpdated,
+                        PreviousKnownPrice = @previousKnownPrice,
+                        PreviousUpdated = @previousUpdated
                     WHERE Id = @id
                     RETURNING Id";
 
@@ -124,6 +136,10 @@ public class StockRepository : BaseRepository, IStockRepository
                 command.Parameters.AddWithValue("@lastKnownPrice", stock.LastKnownPrice.Value);
                 command.Parameters.AddWithValue("@lastUpdated",
                     stock.LastUpdated.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                command.Parameters.AddWithValue("@previousKnownPrice",
+                    stock.PreviousKnownPrice.HasValue ? stock.PreviousKnownPrice.Value : DBNull.Value);
+                command.Parameters.AddWithValue("@previousUpdated",
+                    stock.PreviousUpdated.HasValue ? stock.PreviousUpdated.Value.ToString("yyyy-MM-dd HH:mm:ss") : DBNull.Value);
 
                 var newId = (long)command.ExecuteScalar();
 

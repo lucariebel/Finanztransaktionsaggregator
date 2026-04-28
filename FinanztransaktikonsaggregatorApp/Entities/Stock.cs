@@ -9,6 +9,8 @@ public class Stock
     public decimal AverageBuyPrice { get; set; }
     public decimal? LastKnownPrice { get; set; }
     public DateTime? LastUpdated { get; set; }
+    public decimal? PreviousKnownPrice { get; set; }
+    public DateTime? PreviousUpdated { get; set; }
 
     public decimal GetCurrentValue()
     {
@@ -27,5 +29,40 @@ public class Stock
         }
 
         return 0m;
+    }
+
+    public decimal GetValueChangeSinceLastUpdate()
+    {
+        if (!LastKnownPrice.HasValue || !PreviousKnownPrice.HasValue)
+        {
+            return 0m;
+        }
+
+        return (LastKnownPrice.Value - PreviousKnownPrice.Value) * Quantity;
+    }
+
+    public decimal GetPriceChangeSinceLastUpdate()
+    {
+        if (!LastKnownPrice.HasValue || !PreviousKnownPrice.HasValue)
+        {
+            return 0m;
+        }
+
+        return LastKnownPrice.Value - PreviousKnownPrice.Value;
+    }
+
+    public decimal GetPriceChangePercentageSinceLastUpdate()
+    {
+        if (!LastKnownPrice.HasValue || !PreviousKnownPrice.HasValue)
+        {
+            return 0m;
+        }
+
+        if (PreviousKnownPrice.Value == 0m)
+        {
+            return 0m;
+        }
+
+        return (LastKnownPrice.Value - PreviousKnownPrice.Value) / PreviousKnownPrice.Value * 100m;
     }
 }

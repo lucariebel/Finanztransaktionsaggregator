@@ -42,7 +42,9 @@ public class DatabaseManager
                         Quantity REAL NOT NULL,
                         AverageBuyPrice REAL NOT NULL,
                         LastKnownPrice REAL,
-                        LastUpdated TEXT
+                        LastUpdated TEXT,
+                        PreviousKnownPrice REAL,
+                        PreviousUpdated TEXT
                     );";
 
             var createAccountsTable = @"
