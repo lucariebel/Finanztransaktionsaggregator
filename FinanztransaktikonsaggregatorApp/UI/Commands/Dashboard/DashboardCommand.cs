@@ -42,7 +42,11 @@ public class DashboardCommand : ICommand
     private void PrintNetWorth()
     {
         Console.WriteLine();
-        Console.WriteLine($"Net Worth: {_dashboardService.GetTotalNetWorth(),15:C2}");
+        var netWorth = _dashboardService.GetTotalNetWorth();
+
+        Console.Write("Net Worth: ");
+        ConsoleHelper.WriteColoredAmount(netWorth, 15);
+        Console.WriteLine();
     }
 
     private void PrintAccountOverview()
@@ -51,7 +55,9 @@ public class DashboardCommand : ICommand
         foreach (var balance in _dashboardService.GetBalancesPerAccount())
         {
             var displayName = $"{balance.Key.Name}:";
-            Console.WriteLine($"{displayName,-15} {balance.Value,10:C2}");
+            Console.Write($"{displayName,-15} ");
+            ConsoleHelper.WriteColoredAmount(balance.Value, 10);
+            Console.WriteLine();
         }
     }
 
@@ -70,7 +76,9 @@ public class DashboardCommand : ICommand
         {
             foreach (var expense in topExpenses)
             {
-                Console.WriteLine($"{expense.Date:yyyy-MM-dd}  {expense.Amount,12:C2}  {expense.Description}");
+                Console.Write($"{expense.Date:yyyy-MM-dd}  ");
+                ConsoleHelper.WriteColoredAmount(expense.Amount, 12);
+                Console.WriteLine($"  {expense.Description}");
             }
         }
     }
@@ -90,7 +98,13 @@ public class DashboardCommand : ICommand
         {
             foreach (var budget in warnings)
             {
-                Console.WriteLine($"{budget.Category,-15} ({_budgetService.CalculatePercentage(budget.LimitAmount , budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth())}%) {budget.LimitAmount,10:C2}  WARNING  {_budgetService.CalculateRest(budget.LimitAmount , budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth()),10:C2} left");
+                var percentage = _budgetService.CalculatePercentage(budget.LimitAmount, budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth());
+                var rest = _budgetService.CalculateRest(budget.LimitAmount, budget.Category, DateHelper.CurrentYear(), DateHelper.CurrentMonth());
+
+                Console.ForegroundColor = percentage >= 100 ? ConsoleColor.Red : ConsoleColor.Yellow;
+                Console.Write($"{budget.Category,-15} ({percentage}%) {budget.LimitAmount,10:C2}  WARNING  {rest,10:C2} left");
+                Console.ResetColor();
+                Console.WriteLine();
             }
         }
     }
