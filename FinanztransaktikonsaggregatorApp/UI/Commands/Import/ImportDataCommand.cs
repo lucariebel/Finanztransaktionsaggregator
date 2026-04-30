@@ -54,6 +54,7 @@ public class ImportDataCommand : ICommand
         filepath = InputHelper.GetExistingFilePath($"Your file does not exist, try again!", filepath);
         var transactions = _importsService.ImportTransactions(filepath);
         Console.WriteLine("Start Import...");
+        AskUserForMissingAccountNumbers(transactions);
         PrintTransactions(transactions.AllTransactions);
         var categorized = AskUserForCategory(transactions.UncategorizedTransactions);
         List<Transaction> mergedList = _importsService.MergeList(categorized, transactions.AllTransactions);
@@ -62,6 +63,40 @@ public class ImportDataCommand : ICommand
         Console.WriteLine(resultMessage);
         Console.WriteLine("Finished Import. Press Enter to return");
         Console.ReadKey();
+    }
+    private void AskUserForMissingAccountNumbers(ImportResult importResult)
+    {
+        var missing = importResult.MissingAccountNumberTransactions;
+
+        if (!missing.Any())
+            return;
+
+        if (missing.Count == importResult.AllTransactions.Count)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("In der gesamten CSV fehlt die Account Number.");
+            Console.ResetColor();
+            var accountNumber = InputHelper.AskForAccountNumber("Bitte Account Number für die gesamte CSV eingeben:");
+
+            foreach (var transaction in importResult.AllTransactions)
+            {
+                transaction.AccountNumber = accountNumber;
+            }
+
+            return;
+        }
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Einige Transaktionen haben keine Account Number.");
+        Console.ResetColor();
+        foreach (var transaction in missing)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Beschreibung: {transaction.Description}");
+            Console.WriteLine($"Betrag: {transaction.Amount}");
+            Console.WriteLine($"Datum: {transaction.Date:dd.MM.yyyy}");
+
+            transaction.AccountNumber = InputHelper.AskForAccountNumber("Bitte Account Number für diese Transaktion eingeben:");
+        }
     }
     public void Execute()
     {

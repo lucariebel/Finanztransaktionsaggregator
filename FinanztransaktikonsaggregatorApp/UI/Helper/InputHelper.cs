@@ -114,4 +114,21 @@ public static class InputHelper
             Console.WriteLine("Unvalid date. Please Enter in Format yyyy-mm-dd or enter for no date.");
         }
     }
+    public static int AskForAccountNumber(string message)
+    {
+        while (true)
+        {
+            Console.WriteLine(message);
+            var input = Console.ReadLine();
+
+            try
+            {
+                return ParserHelper.ParseRequiredId(input);
+            }
+            catch
+            {
+                Console.WriteLine("Ungültige Account Number. Bitte erneut versuchen.");
+            }
+        }
+    }
 }

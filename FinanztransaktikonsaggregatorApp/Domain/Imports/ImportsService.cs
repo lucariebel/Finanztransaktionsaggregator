@@ -22,6 +22,7 @@ public class ImportsService : IImportsService
     {
         var lines = File.ReadAllLines(filePath);
         var transactions = new List<Transaction>();
+        var missingAccountNumberTransactions = new List<Transaction>();
         foreach (var line in lines.Skip(1))
         {
             var parts = line.Split(';');
@@ -35,9 +36,16 @@ public class ImportsService : IImportsService
                 ),
                 Amount = ParserHelper.ParseDecimal(parts[1]),
                 Description = parts[2],
-                Category = _categoryService.GetCategoryForDescription(parts[3]),
-                AccountNumber = ParserHelper.ParseRequiredId(parts[4])
+                Category = _categoryService.GetCategoryForDescription(parts[3])
             };
+            if (parts.Length > 4 && !string.IsNullOrWhiteSpace(parts[4]))
+            {
+                transaction.AccountNumber = ParserHelper.ParseRequiredId(parts[4]);
+            }
+            else
+            {
+                missingAccountNumberTransactions.Add(transaction);
+            }
             transactions.Add(transaction);
         }
         var uncategorized = transactions
@@ -47,7 +55,8 @@ public class ImportsService : IImportsService
         return new ImportResult
         {
             AllTransactions = transactions,
-            UncategorizedTransactions = uncategorized
+            UncategorizedTransactions = uncategorized,
+            MissingAccountNumberTransactions = missingAccountNumberTransactions
         };
     }
 
