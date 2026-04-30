@@ -111,6 +111,90 @@ public class CategoryService : ICategoryService
             "gebühr","kontoführung","bankgebühr",
             "überweisung","lastschrift"
         }
+    },
+    { "Gehalt", new[]
+    {
+        "gehalt","lohn","salary","arbeitslohn","vergütung",
+        "arbeitgeber","payroll","bonus","prämie"
+    }
+    },
+
+    { "Bildung", new[]
+        {
+            "schule","universität","uni","hochschule","studium",
+            "kurs","weiterbildung","udemy","coursera","seminar",
+            "bücher","lehrbuch"
+        }
+    },
+
+    { "Abos & Mitgliedschaften", new[]
+        {
+            "abo","abonnement","mitgliedschaft","membership",
+            "patreon","onlyfans","verein","clubbeitrag",
+            "jahresbeitrag","monatsbeitrag"
+        }
+    },
+
+    { "Haushalt", new[]
+        {
+            "dm","rossmann","müller","drogerie","haushalt",
+            "reinigung","putzmittel","waschmittel","möbel",
+            "dekoration","baumarkt","obi","hornbach","bauhaus"
+        }
+    },
+
+    { "Geschenke & Spenden", new[]
+        {
+            "geschenk","blumen","florist","spende","donation",
+            "charity","hilfswerk","unicef","rotes kreuz",
+            "geburtstag","weihnachten"
+        }
+    },
+    { "Kinder & Familie", new[]
+    {
+        "kindergarten","kita","schule","schulessen","elternbeitrag",
+        "kinderbetreuung","babyausstattung","spielzeug","baby",
+        "windeln","familie","nachhilfe","hort","tagesmutter",
+        "kinderarzt","familienkasse","kindergeld"
+    }
+    },
+
+    { "Beauty & Pflege", new[]
+        {
+            "friseur","barber","haarschnitt","kosmetik","nagelstudio",
+            "beauty","parfümerie","douglas","sephora","pflege",
+            "hautpflege","makeup","make-up","drogerie","massage",
+            "wellness","spa","solarium"
+        }
+    },
+
+    { "Haustiere", new[]
+        {
+            "tierarzt","fressnapf","zooplus","zoo","tierbedarf",
+            "hundefutter","katzenfutter","futterhaus","haustier",
+            "hund","katze","tierklinik","impfung","tierapotheke",
+            "hundesteuer","hundeschule"
+        }
+    },
+
+    { "Steuern & Behörden", new[]
+        {
+            "finanzamt","steuer","steuern","einkommensteuer",
+            "lohnsteuer","grundsteuer","kfz steuer","elster",
+            "behörde","bürgeramt","einwohnermeldeamt","rathaus",
+            "gebührenbescheid","verwaltung","amt","ausweis",
+            "reisepass","zulassungsstelle"
+        }
+    },
+
+    { "Kredite & Finanzierung", new[]
+        {
+            "kredit","darlehen","rate","ratenzahlung","finanzierung",
+            "kreditkarte","visa","mastercard","zins","zinsen",
+            "tilgung","hypothek","baufinanzierung","leasing",
+            "klarna","paypal ratenzahlung","consors finanz",
+            "santander","targobank"
+        }
     }
 };
 
