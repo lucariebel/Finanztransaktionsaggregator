@@ -36,6 +36,41 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
         return list;
     }
 
+    public List<Transaction> GetByAccountId(int accountId)
+    {
+        var list = new List<Transaction>();
+
+        using (var connection = GetOpenConnection())
+        {
+            var sql = @"
+                SELECT Id, Date, Amount, Description, Category, AccountNumber
+                FROM Transactions
+                WHERE AccountNumber = @accountId
+                ORDER BY Date, Id";
+
+            using (var command = new SqliteCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@accountId", accountId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                        list.Add(new Transaction
+                        {
+                            Id = reader.GetInt32(0),
+                            Date = DateTime.Parse(reader.GetString(1)),
+                            Amount = reader.GetDecimal(2),
+                            Description = reader.GetString(3),
+                            Category = reader.GetString(4),
+                            AccountNumber = reader.GetInt32(5)
+                        });
+                }
+            }
+        }
+
+        return list;
+    }
+
     public List<Transaction> GetTransactionSpendingsByCategoryAndMonth(string category, int year, int month)
     {
         var list = new List<Transaction>();

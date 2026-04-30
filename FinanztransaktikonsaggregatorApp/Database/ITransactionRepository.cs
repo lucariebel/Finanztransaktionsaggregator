@@ -6,6 +6,7 @@ namespace FinanztransaktikonsaggregatorApp.Database;
 public interface ITransactionRepository
 {
     List<Transaction> GetAll();
+    List<Transaction> GetByAccountId(int accountId);
     List<Transaction> GetTransactionSpendingsByCategoryAndMonth(string category, int year, int month);
     Transaction Insert(Transaction transaction);
     List<Transaction> GetTransactionsByMonth(int year, int month);
