@@ -3,6 +3,7 @@ using FinanztransaktikonsaggregatorApp.Database;
 using FinanztransaktikonsaggregatorApp.Domain.Budgets;
 using FinanztransaktikonsaggregatorApp.Domain.Category;
 using FinanztransaktikonsaggregatorApp.Domain.Accounts;
+using FinanztransaktikonsaggregatorApp.Domain.Accounts.History;
 using FinanztransaktikonsaggregatorApp.Domain.Dashboard;
 using FinanztransaktikonsaggregatorApp.Domain.Imports;
 using FinanztransaktikonsaggregatorApp.Domain.Transactions;
@@ -23,6 +24,7 @@ var transactionRepo = new TransactionRepository(appConfig);
 var transactionService = new TransactionService(transactionRepo);
 var accountRepo = new AccountRepository(appConfig);
 var accountService = new AccountService(accountRepo);
+var accountBalanceHistoryService = new AccountBalanceHistoryService(accountService, transactionService);
 var budgetRepository = new BudgetRepository(appConfig);
 var budgetService = new BudgetService(budgetRepository, transactionService);
 var dashboardService = new DashboardService(transactionService, accountService);
@@ -44,7 +46,7 @@ var mainCommands = new List<ICommand>
     new BudgetMenuCommand(budgetService),
     new ImportDataCommand(importService),
     new ExportCommand(exportService),
-    new AccountMenuCommand(accountService),
+    new AccountMenuCommand(accountService, accountBalanceHistoryService),
     new StockMenuCommand(stockService, stockAnalyticsService)
 
 };

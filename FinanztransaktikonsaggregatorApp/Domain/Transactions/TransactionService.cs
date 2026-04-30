@@ -16,6 +16,8 @@ public class TransactionService : ITransactionService
 
     public List<Transaction> GetAll() => _transactionRepository.GetAll();
 
+    public List<Transaction> GetByAccountId(int accountId) => _transactionRepository.GetByAccountId(accountId);
+
     public List<Transaction> GetTopExpenses(int count)
     {
         return _transactionRepository.GetAll()

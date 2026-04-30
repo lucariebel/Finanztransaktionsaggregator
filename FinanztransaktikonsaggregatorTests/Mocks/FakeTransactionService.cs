@@ -18,6 +18,15 @@ class FakeTransactionService : ITransactionService
         return _transactions.ToList();
     }
 
+    public List<Transaction> GetByAccountId(int accountId)
+    {
+        return _transactions
+            .Where(t => t.AccountNumber == accountId)
+            .OrderBy(t => t.Date)
+            .ThenBy(t => t.Id)
+            .ToList();
+    }
+
     public List<Transaction> GetTopExpenses(int count)
     {
         return _transactions

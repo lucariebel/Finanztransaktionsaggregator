@@ -3,6 +3,13 @@ namespace FinanztransaktikonsaggregatorApp.Controllers.Helper;
 
 public static class ConsoleHelper
 {
+    public static void WriteColoredAmount(decimal amount, int padding)
+    {
+        Console.ForegroundColor = amount >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
+        Console.Write(amount.ToString("C2").PadLeft(padding));
+        Console.ResetColor();
+    }
+
     public static void ConfirmAndExecute(
     string question,
     Action actionOnYes
