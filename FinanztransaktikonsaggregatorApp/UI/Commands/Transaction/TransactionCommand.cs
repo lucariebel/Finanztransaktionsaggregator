@@ -22,7 +22,9 @@ public class TransactionCommand : ICommand
         MenuHelper.CreateHeader("SEARCH TRANSACTIONS");
         Console.WriteLine();
         var filter = InputHelper.ReadFilter();
+        var sortOptions = AskForSorting();
         var transactions = _transactionService.GetFilteredTransactions(filter);
+        transactions = _transactionService.SortTransactions(transactions, sortOptions);
 
         Console.WriteLine();
         PrintTransactions(transactions);
@@ -93,5 +95,36 @@ public class TransactionCommand : ICommand
         Console.WriteLine($"Income:   {income,12:C2}");
         Console.WriteLine($"Expenses: {expenses,12:C2}");
         Console.WriteLine($"Balance:  {balance,12:C2}");
+    }
+    private TransactionSortFilter AskForSorting()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Sort results?");
+        Console.WriteLine("1 - Date");
+        Console.WriteLine("2 - Amount");
+        Console.WriteLine("3 - Category");
+        Console.WriteLine("4 - Account");
+        Console.WriteLine("Press Enter for no sorting.");
+
+        string input = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(input))
+            return new TransactionSortFilter();
+
+        Console.WriteLine("Sort descending? Press Y for yes, Enter for no.");
+        bool descending = Console.ReadKey(true).Key == ConsoleKey.Y;
+
+        return new TransactionSortFilter
+        {
+            SortBy = input switch
+            {
+                "1" => TransactionSortBy.Date,
+                "2" => TransactionSortBy.Amount,
+                "3" => TransactionSortBy.Category,
+                "4" => TransactionSortBy.Account,
+                _ => TransactionSortBy.None
+            },
+            Descending = descending
+        };
     }
 }

@@ -12,4 +12,5 @@ public interface ITransactionService
     decimal GetIncomeByCategory(string category, int year, int month);
     void AddTransaction(Transaction transaction);
     List<Transaction> GetFilteredTransactions(TransactionsFilter transactionFilter);
+    List<Transaction> SortTransactions(List<Transaction> transactions, TransactionSortFilter sortOptions);
 }
