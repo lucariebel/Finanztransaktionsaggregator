@@ -49,7 +49,7 @@ public class TransactionService : ITransactionService
     {
         _transactionRepository.Insert(transaction);
     }
-    public List<Transaction> GetFilteredTransactions(TransactionFilter transactionFilter)
+    public List<Transaction> GetFilteredTransactions(TransactionsFilter transactionFilter)
     {
         return _transactionRepository.GetFiltered(transactionFilter);
     }

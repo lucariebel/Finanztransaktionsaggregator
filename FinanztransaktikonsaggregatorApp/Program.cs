@@ -19,6 +19,7 @@ using FinanztransaktikonsaggregatorApp.Domain.Stocks.Prices;
 using FinanztransaktikonsaggregatorApp.Domain.Stocks.Analytics;
 using FinanztransaktikonsaggregatorApp.Domain.Stocks.Insights;
 
+
 var appConfig = new AppConfig();
 var dbManager = new DatabaseManager(appConfig);
 var transactionRepo = new TransactionRepository(appConfig);
@@ -46,6 +47,7 @@ var mainCommands = new List<ICommand>
 {
     new DashboardCommand(dashboardService, budgetService, transactionService),
     new BudgetMenuCommand(budgetService),
+    new TransactionCommand(transactionService),
     new ImportDataCommand(importService),
     new ExportCommand(exportService),
     new AccountMenuCommand(accountService, accountBalanceHistoryService),

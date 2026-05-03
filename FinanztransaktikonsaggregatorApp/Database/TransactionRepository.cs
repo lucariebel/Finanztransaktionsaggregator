@@ -210,7 +210,7 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
         }
     }
 
-    public List<Transaction> GetFiltered(TransactionFilter filter)
+    public List<Transaction> GetFiltered(TransactionsFilter filter)
     {
         var list = new List<Transaction>();
         var conditions = new List<string>();

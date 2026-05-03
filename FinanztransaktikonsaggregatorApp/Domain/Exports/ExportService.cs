@@ -19,7 +19,7 @@ public class ExportService : IExportService
 
     }
 
-    public string ExportTransactionsAsCSV(string filepath, TransactionFilter transactionFilter)
+    public string ExportTransactionsAsCSV(string filepath, TransactionsFilter transactionFilter)
     {
         List<Transaction> transactions =_transactionService.GetFilteredTransactions(transactionFilter);
 
@@ -36,7 +36,7 @@ public class ExportService : IExportService
         return "Succesfully exported";
     }
 
-    public string ExportTransactionsAsPDF(string filepath, TransactionFilter transactionFilter)
+    public string ExportTransactionsAsPDF(string filepath, TransactionsFilter transactionFilter)
     {
         List<Transaction> transactions = _transactionService.GetFilteredTransactions(transactionFilter);
         string extension = Path.GetExtension(filepath);

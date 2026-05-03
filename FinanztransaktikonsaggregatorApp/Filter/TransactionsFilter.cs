@@ -1,6 +1,6 @@
 ﻿namespace FinanztransaktikonsaggregatorApp.Filter
 {
-    public class TransactionFilter
+    public class TransactionsFilter
     {
         public List<int>? AccountNumbers { get; set; }
         public List<string>? Categories { get; set; }

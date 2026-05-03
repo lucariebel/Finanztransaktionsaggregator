@@ -11,5 +11,5 @@ public interface ITransactionService
     decimal GetUsedBudgetByCategoryAndMonth(string category, int year, int month);
     decimal GetIncomeByCategory(string category, int year, int month);
     void AddTransaction(Transaction transaction);
-    List<Transaction> GetFilteredTransactions(TransactionFilter transactionFilter);
+    List<Transaction> GetFilteredTransactions(TransactionsFilter transactionFilter);
 }

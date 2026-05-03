@@ -12,5 +12,5 @@ public interface ITransactionRepository
     List<Transaction> GetTransactionsByMonth(int year, int month);
     Transaction Update(Transaction transaction);
     void Delete(Transaction transaction);
-    List<Transaction> GetFiltered(TransactionFilter transactionFilter);
+    List<Transaction> GetFiltered(TransactionsFilter transactionFilter);
 }

@@ -1,5 +1,7 @@
 ﻿
 using QuestPDF.Fluent;
+using System.Transactions;
+using FinanztransaktikonsaggregatorApp.Filter;
 
 namespace FinanztransaktikonsaggregatorApp.Controllers.Helper;
 
@@ -130,5 +132,57 @@ public static class InputHelper
                 Console.WriteLine("Ungültige Account Number. Bitte erneut versuchen.");
             }
         }
+    }
+
+    public static TransactionsFilter ReadFilter()
+    {
+        var filter = new TransactionsFilter();
+
+        filter.AccountNumbers = InputHelper.GetIntList(
+            "Enter account numbers separated by comma, or press Enter for all accounts:");
+
+        filter.Categories = InputHelper.GetStringList(
+            "Enter categories separated by comma, or press Enter for all categories:");
+
+        filter.StartDate = InputHelper.GetDateTime(
+            "Enter start date, or press Enter to skip (format: yyyy-mm-dd): ");
+
+        filter.EndDate = InputHelper.GetDateTime(
+            "Enter end date, or press Enter to skip (format: yyyy-mm-dd): ");
+
+        if (!filter.StartDate.HasValue && !filter.EndDate.HasValue)
+        {
+            Console.WriteLine("Enter year, or press Enter to skip:");
+            filter.Year = ParserHelper.ParseOptionalInt(
+                Console.ReadLine(),
+                1,
+                null,
+                "Invalid year. Please enter a positive number, or press Enter to skip:");
+
+            Console.WriteLine("Enter month, or press Enter to skip:");
+            filter.Month = ParserHelper.ParseOptionalInt(
+                Console.ReadLine(),
+                1,
+                12,
+                "Invalid month. Please enter a number between 1 and 12, or press Enter to skip:");
+
+            Console.WriteLine("Enter day, or press Enter to skip:");
+            filter.Day = ParserHelper.ParseOptionalInt(
+                Console.ReadLine(),
+                1,
+                31,
+                "Invalid day. Please enter a number between 1 and 31, or press Enter to skip:");
+        }
+
+        Console.WriteLine("Enter minimum amount, or press Enter to skip:");
+        filter.MinAmount = ParserHelper.ParseOptinalDecimal(Console.ReadLine());
+
+        Console.WriteLine("Enter maximum amount, or press Enter to skip:");
+        filter.MaxAmount = ParserHelper.ParseOptinalDecimal(Console.ReadLine());
+
+        Console.WriteLine("Enter description keyword, or press Enter to skip:");
+        filter.DescriptionContains = Console.ReadLine();
+
+        return filter;
     }
 }
