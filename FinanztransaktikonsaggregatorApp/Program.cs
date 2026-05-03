@@ -17,6 +17,7 @@ using FinanztransaktikonsaggregatorApp.UI.Commands.Accounts;
 using FinanztransaktikonsaggregatorApp.UI.Commands.Stocks;
 using FinanztransaktikonsaggregatorApp.Domain.Stocks.Prices;
 using FinanztransaktikonsaggregatorApp.Domain.Stocks.Analytics;
+using FinanztransaktikonsaggregatorApp.Domain.Stocks.Insights;
 
 var appConfig = new AppConfig();
 var dbManager = new DatabaseManager(appConfig);
@@ -35,6 +36,7 @@ var stockRepository = new StockRepository(appConfig);
 var priceProvider = new StooqStockPriceProvider();
 var stockService = new StockService(stockRepository, priceProvider);
 var stockAnalyticsService = new StockAnalyticsService(stockService);
+var stockInsightService = new StockInsightService(stockService, stockAnalyticsService);
 
 
 dbManager.Initialize();
@@ -47,7 +49,7 @@ var mainCommands = new List<ICommand>
     new ImportDataCommand(importService),
     new ExportCommand(exportService),
     new AccountMenuCommand(accountService, accountBalanceHistoryService),
-    new StockMenuCommand(stockService, stockAnalyticsService)
+    new StockMenuCommand(stockService, stockAnalyticsService, stockInsightService)
 
 };
 
