@@ -31,6 +31,7 @@ public class DashboardCommand : ICommand
         MenuHelper.CreateHorizontalLine();
         Console.WriteLine($"Month: {DateTime.Now:MMMM}");
 
+        PrintMonthlySummary();
         PrintTopExpenses();
         PrintBudgetWarnings();
 
@@ -59,6 +60,27 @@ public class DashboardCommand : ICommand
             ConsoleHelper.WriteColoredAmount(balance.Value, 10);
             Console.WriteLine();
         }
+    }
+
+    private void PrintMonthlySummary()
+    {
+        var summary = _dashboardService.GetMonthlySummary(DateHelper.CurrentYear(), DateHelper.CurrentMonth());
+
+        Console.WriteLine();
+        Console.WriteLine("[ MONTHLY SUMMARY ]");
+        Console.Write("Income:        ");
+        ConsoleHelper.WriteColoredAmount(summary.Income, 12);
+        Console.WriteLine();
+
+        Console.Write("Expenses:      ");
+        ConsoleHelper.WriteColoredAmount(-summary.Expenses, 12);
+        Console.WriteLine();
+
+        Console.Write("Cash Flow:     ");
+        ConsoleHelper.WriteColoredAmount(summary.CashFlow, 12);
+        Console.WriteLine();
+
+        Console.WriteLine($"Transactions:  {summary.TransactionCount,12}");
     }
 
     private void PrintTopExpenses()

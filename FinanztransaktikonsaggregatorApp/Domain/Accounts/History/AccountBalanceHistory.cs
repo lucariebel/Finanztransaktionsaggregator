@@ -1,4 +1,6 @@
-namespace FinanztransaktikonsaggregatorApp.Entities;
+using FinanztransaktikonsaggregatorApp.Entities;
+
+namespace FinanztransaktikonsaggregatorApp.Domain.Accounts.History;
 
 public class AccountBalanceHistory
 {

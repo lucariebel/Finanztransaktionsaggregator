@@ -18,6 +18,11 @@ public class TransactionService : ITransactionService
 
     public List<Transaction> GetByAccountId(int accountId) => _transactionRepository.GetByAccountId(accountId);
 
+    public List<Transaction> GetTransactionsByMonth(int year, int month)
+    {
+        return _transactionRepository.GetTransactionsByMonth(year, month);
+    }
+
     public List<Transaction> GetTopExpenses(int count)
     {
         return _transactionRepository.GetAll()

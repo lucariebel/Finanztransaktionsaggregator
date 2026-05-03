@@ -49,4 +49,26 @@ public class DashboardService : IDashboardService
 
         return balances;
     }
+
+    public MonthlyDashboardSummary GetMonthlySummary(int year, int month)
+    {
+        var transactions = _transactionService.GetTransactionsByMonth(year, month);
+
+        var expenses = transactions
+            .Where(t => t.Amount < 0)
+            .Sum(t => Math.Abs(t.Amount));
+
+        var income = transactions
+            .Where(t => t.Amount > 0)
+            .Sum(t => t.Amount);
+
+        return new MonthlyDashboardSummary
+        {
+            Year = year,
+            Month = month,
+            Income = income,
+            Expenses = expenses,
+            TransactionCount = transactions.Count
+        };
+    }
 }
