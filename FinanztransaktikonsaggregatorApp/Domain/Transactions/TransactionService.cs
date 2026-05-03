@@ -23,9 +23,9 @@ public class TransactionService : ITransactionService
         return _transactionRepository.GetTransactionsByMonth(year, month);
     }
 
-    public List<Transaction> GetTopExpenses(int count)
+    public List<Transaction> GetTopExpensesByMonth(int count, int year, int month)
     {
-        return _transactionRepository.GetAll()
+        return _transactionRepository.GetTransactionsByMonth(year, month)
             .Where(t => t.Amount < 0)
             .OrderBy(t => t.Amount)
             .Take(count)

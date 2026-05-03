@@ -23,6 +23,23 @@ class FakeTransactionService : ITransactionService
             .Where(t => t.AccountNumber == accountId)
             .ToList();
     }
+
+    public List<Transaction> GetTransactionsByMonth(int year, int month)
+    {
+        return _transactions
+            .Where(t => t.Date.Year == year && t.Date.Month == month)
+            .ToList();
+    }
+
+    public List<Transaction> GetTopExpensesByMonth(int count, int year, int month)
+    {
+        return GetTransactionsByMonth(year, month)
+            .Where(t => t.Amount < 0)
+            .OrderBy(t => t.Amount)
+            .Take(count)
+            .ToList();
+    }
+
     public List<Transaction> GetTopExpenses(int count)
     {
         return _transactions

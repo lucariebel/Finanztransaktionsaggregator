@@ -89,7 +89,7 @@ public class DashboardCommand : ICommand
         MenuHelper.CreateHorizontalLine();
         Console.WriteLine("[ TOP 3 EXPENSES ]");
 
-        var topExpenses = _transactionService.GetTopExpenses(3);
+        var topExpenses = _transactionService.GetTopExpensesByMonth(3, DateHelper.CurrentYear(), DateHelper.CurrentMonth());
         if (topExpenses.Count == 0)
         {
             Console.WriteLine("No expenses recorded.");
