@@ -54,6 +54,13 @@ public class ImportDataCommand : ICommand
         filepath = InputHelper.GetExistingFilePath($"Your file does not exist, try again!", filepath);
         var transactions = _importsService.ImportTransactions(filepath);
         Console.WriteLine("Start Import...");
+        PrintImportPreview(transactions.AllTransactions, transactions.UncategorizedTransactions);
+        if (!ConfirmImport())
+        {
+            Console.WriteLine("Press any key to return.");
+            Console.ReadKey();
+            return;
+        }
         AskUserForMissingAccountNumbers(transactions);
         PrintTransactions(transactions.AllTransactions);
         var categorized = AskUserForCategory(transactions.UncategorizedTransactions);
@@ -98,6 +105,41 @@ public class ImportDataCommand : ICommand
             transaction.AccountNumber = InputHelper.AskForAccountNumber("Bitte Account Number für diese Transaktion eingeben:");
         }
     }
+    private void PrintImportPreview(List<Transaction> transactions, List<Transaction> uncategorized)
+    {
+        if (transactions.Count == 0)
+        {
+            Console.WriteLine("No transactions found in import file.");
+            return;
+        }
+        Console.WriteLine();
+        MenuHelper.CreateHorizontalLine();
+        Console.WriteLine("[ IMPORT PREVIEW ]");
+        Console.WriteLine($"Transactions:     {transactions.Count}");
+        Console.WriteLine($"Uncategorized:    {uncategorized.Count}");
+        Console.WriteLine();
+
+        MenuHelper.CreateHorizontalLine();
+        Console.WriteLine();
+    }
+
+    private bool ConfirmImport()
+    {
+        Console.WriteLine("Do you want to continue with this import?");
+        Console.WriteLine("Press Y to continue, Enter to cancel.");
+
+        var key = Console.ReadKey(true).Key;
+
+        if (key == ConsoleKey.Y)
+        {
+            Console.WriteLine("Import confirmed.");
+            return true;
+        }
+
+        Console.WriteLine("Import canceled.");
+        return false;
+    }
+
     public void Execute()
     {
         MenuHelper.CreateHeader("IMPORT DATA");

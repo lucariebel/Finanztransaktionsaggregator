@@ -195,7 +195,32 @@ public class CategoryService : ICategoryService
             "klarna","paypal ratenzahlung","consors finanz",
             "santander","targobank"
         }
+    },
+    { "Gaming", new[]
+        {
+            "steam","playstation","xbox","nintendo","epic games",
+            "gog","game pass","ps plus","gaming","videospiel",
+            "riot games","blizzard","ea app","ubisoft"
+        }
+    },
+
+    { "Software & Cloud", new[]
+        {
+            "microsoft","google cloud","aws","azure","dropbox",
+            "icloud","github","gitlab","jetbrains","adobe",
+            "canva","notion","openai","chatgpt"
+        }
+    },
+
+    { "Gebühren & Strafen", new[]
+        {
+            "mahnung","mahngebühr","säumniszuschlag","bußgeld",
+            "verwarnung","strafe","inkasso","rücklastschrift",
+            "gebühr","service fee","penalty","late fee"
+        }
     }
+
+
 };
 
     public string GetCategoryForDescription(string description)
