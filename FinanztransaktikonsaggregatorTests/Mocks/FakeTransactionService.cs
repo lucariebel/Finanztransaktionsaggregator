@@ -113,4 +113,31 @@ class FakeTransactionService : ITransactionService
 
         return filteredTransactions;
     }
+    public List<Transaction> SortTransactions(List<Transaction> transactions, TransactionSortFilter sortOptions)
+    {
+        if (sortOptions.SortBy == TransactionSortBy.None)
+            return transactions;
+
+        return sortOptions.SortBy switch
+        {
+            TransactionSortBy.Date => sortOptions.Descending
+                ? transactions.OrderByDescending(t => t.Date).ToList()
+                : transactions.OrderBy(t => t.Date).ToList(),
+
+            TransactionSortBy.Amount => sortOptions.Descending
+                ? transactions.OrderByDescending(t => t.Amount).ToList()
+                : transactions.OrderBy(t => t.Amount).ToList(),
+
+            TransactionSortBy.Category => sortOptions.Descending
+                ? transactions.OrderByDescending(t => t.Category).ToList()
+                : transactions.OrderBy(t => t.Category).ToList(),
+
+            TransactionSortBy.Account => sortOptions.Descending
+                ? transactions.OrderByDescending(t => t.AccountNumber).ToList()
+                : transactions.OrderBy(t => t.AccountNumber).ToList(),
+
+            _ => transactions
+        };
+    }
+
 }
