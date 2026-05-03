@@ -17,16 +17,12 @@ class FakeTransactionService : ITransactionService
     {
         return _transactions.ToList();
     }
-
     public List<Transaction> GetByAccountId(int accountId)
     {
         return _transactions
             .Where(t => t.AccountNumber == accountId)
-            .OrderBy(t => t.Date)
-            .ThenBy(t => t.Id)
             .ToList();
     }
-
     public List<Transaction> GetTopExpenses(int count)
     {
         return _transactions
@@ -56,7 +52,7 @@ class FakeTransactionService : ITransactionService
             .Sum(t => t.Amount);
     }
 
-    public List<Transaction> GetFilteredTransactions(TransactionFilter transactionFilter)
+    public List<Transaction> GetFilteredTransactions(TransactionsFilter transactionFilter)
     {
         List<Transaction> filteredTransactions = _transactions.ToList();
 
