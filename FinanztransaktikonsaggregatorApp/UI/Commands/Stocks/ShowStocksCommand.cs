@@ -1,6 +1,5 @@
 using FinanztransaktikonsaggregatorApp.Controllers.Helper;
 using FinanztransaktikonsaggregatorApp.Domain.Stocks;
-using FinanztransaktikonsaggregatorApp.UI.Commands;
 
 namespace FinanztransaktikonsaggregatorApp.UI.Commands.Stocks;
 

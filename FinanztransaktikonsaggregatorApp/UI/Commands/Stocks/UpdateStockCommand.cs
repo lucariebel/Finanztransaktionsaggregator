@@ -1,6 +1,5 @@
 using FinanztransaktikonsaggregatorApp.Controllers.Helper;
 using FinanztransaktikonsaggregatorApp.Domain.Stocks;
-using FinanztransaktikonsaggregatorApp.UI.Commands;
 
 namespace FinanztransaktikonsaggregatorApp.UI.Commands.Stocks;
 
@@ -31,20 +30,7 @@ public class UpdateStockCommand : ICommand
             return;
         }
 
-        Console.WriteLine("{0,-6} | {1,-10} | {2,-25} | {3,12} | {4,15}", "ID", "Ticker", "Name", "Quantity", "Buy Price");
-        MenuHelper.CreateHorizontalLine();
-
-        foreach (var stockItem in stocks)
-        {
-            Console.WriteLine(
-                "{0,-6} | {1,-10} | {2,-25} | {3,12:N2} | {4,15:C2}",
-                stockItem.Id,
-                stockItem.TickerSymbol,
-                stockItem.Name,
-                stockItem.Quantity,
-                stockItem.AverageBuyPrice
-            );
-        }
+        StockConsolePrinter.PrintSelectionTable(stocks);
 
         Console.WriteLine();
         Console.WriteLine("Please enter the ID you want to update.");
